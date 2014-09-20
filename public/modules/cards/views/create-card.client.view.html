@@ -12,6 +12,31 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label" for="manaCost">Mana Cost</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="manaCost" id="manaCost" class="form-control" placeholder="Mana Cost" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="convertedManaCost">Converted Mana Cost</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="convertedManaCost" id="convertedManaCost" class="form-control" placeholder="Converted Mana Cost" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="type">Type</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="type" id="type" class="form-control" placeholder="Type" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="rules">Rules</label>
+                    <div class="controls">
+                        <textarea data-ng-model="rules" id="rules" class="form-control" placeholder="Rules" required>
+                        </textarea>
+                    </div>
+                </div>
+                <div class="form-group">
                     <input type="submit" class="btn btn-default">
                 </div>
 				<div data-ng-show="error" class="text-danger">

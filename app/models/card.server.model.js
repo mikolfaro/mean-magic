@@ -28,7 +28,7 @@ var CardSchema = new Schema({
     },
     type: {
         type: String,
-        required: true
+        required: 'Type cannot be blank'
     },
     rules: {
         type: String

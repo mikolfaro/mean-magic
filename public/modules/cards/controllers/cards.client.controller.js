@@ -9,7 +9,12 @@ angular.module('cards').controller('CardsController', ['$scope', '$stateParams',
 		$scope.create = function() {
 			// Create new Card object
 			var card = new Cards ({
-				name: this.name
+				name: this.name,
+                manaCost: this.manaCost,
+                convertedManaCost: this.convertedManaCost,
+                type: this.type,
+                rules: this.rules,
+                transformsInto: this.transformsInto
 			});
 
 			// Redirect after save
@@ -41,7 +46,7 @@ angular.module('cards').controller('CardsController', ['$scope', '$stateParams',
 
 		// Update existing Card
 		$scope.update = function() {
-			var card = $scope.card ;
+			var card = $scope.card;
 
 			card.$update(function() {
 				$location.path('cards/' + card._id);
