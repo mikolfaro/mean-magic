@@ -1,6 +1,6 @@
 {
-	"name": "mean",
-	"description": "Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js",
+	"name": "MEAN Magic",
+	"description": "MTG Card Collector",
 	"version": "0.0.1",
 	"author": "Mikol",
 	"engines": {

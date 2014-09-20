@@ -2,9 +2,9 @@
 
 module.exports = {
 	app: {
-		title: 'MEAN',
-		description: 'Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js',
-		keywords: 'MTG, Magic The Gathering'
+		title: 'MEAN Magic',
+		description: 'MTG Card Collector',
+		keywords: 'MTG, Magic The Gathering, MEAN'
 	},
 	port: process.env.PORT || 3000,
 	templateEngine: 'swig',
