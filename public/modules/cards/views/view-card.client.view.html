@@ -1,6 +1,11 @@
 <section data-ng-controller="CardsController" data-ng-init="findOne()">
 	<div class="page-header">
-		<h1 data-ng-bind="card.name"></h1>
+        <div class="col-sm-8">
+            <h1 data-ng-bind="card.name"></h1>
+        </div>
+        <div class="col-sm-4">
+            <span ng-bind-html="card.manaCost|iconifyMana"></span>
+        </div>
 	</div>
 	<div class="pull-right" data-ng-show="authentication.user._id == card.user._id">
 		<a class="btn btn-primary" href="/#!/cards/{{card._id}}/edit">
@@ -10,12 +15,21 @@
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>
-	<small>
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>{{ card.type }}</h3>
+            <p>{{ card.rules }}</p>
+        </div>
+        <div class="col-sm-6">
+
+        </div>
+    </div>
+	<!--<small>
 		<em class="text-muted">
 			Posted on
 			<span data-ng-bind="card.created | date:'mediumDate'"></span>
 			by
 			<span data-ng-bind="card.user.displayName"></span>
 		</em>
-	</small>
+	</small>-->
 </section>

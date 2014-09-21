@@ -56,7 +56,7 @@ angular.module('cards').filter('iconifyMana', ['ManaCostManipulator', function (
         };
 
         return ManaCostManipulator.split(input).map(function(value) {
-            return '<img src="modules/cards/img/mana/' + manaMap[value] + '" alt="' + value + '" />';
+            return '<img src="modules/cards/img/mana/' + manaMap[value] + '" alt="' + value + '" class="img-responsive" />';
         }).join('');
     };
 }]);
