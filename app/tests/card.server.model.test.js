@@ -189,7 +189,7 @@ describe('Card Model Unit Tests:', function() {
                         Card.find({}, function (err, cards) {
                             cards.should.have.length(3);
                             done();
-                        })
+                        });
                     });
                 });
             });
