@@ -204,7 +204,7 @@ describe('Card Model Unit Tests:', function() {
 
     });
 
-	afterEach(function(done) { 
+	afterEach(function(done) {
 		Card.remove().exec();
 		User.remove().exec();
 

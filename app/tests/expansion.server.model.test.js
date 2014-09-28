@@ -49,8 +49,8 @@ describe('Expansion Model Unit Tests:', function() {
 
 	describe('Method Save', function() {
         it('should begin with no expansions', function(done){
-            Expansion.find({}, function(err, editions) {
-                editions.should.have.length(0);
+            Expansion.find({}, function(err, expansions) {
+                expansions.should.have.length(0);
                 done();
             });
         });
