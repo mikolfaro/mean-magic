@@ -1,0 +1,48 @@
+<section data-ng-controller="PrintsController">
+    <div class="page-header">
+        <h1>New Print</h1>
+    </div>
+    <div class="col-md-12">
+        <form class="form-horizontal" data-ng-submit="create()" novalidate>
+            <fieldset>
+                <div class="form-group">
+                    <label class="control-label" for="cardName">Card</label>
+                    <div class="controls">
+                        <autocomplete ng-model="cardName" attr-input-id="cardName" attr-input-class="form-control" attr-placeholder="Card name" data="cards" required></autocomplete>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="expansionCode">Expansion</label>
+                    <div class="controls">
+                        <autocomplete ng-model="expansionCode" attr-input-id="expansionCode" attr-input-class="form-control" attr-placeholder="Code or name" data="expansions" required></autocomplete>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="collectorNumber">Collector number</label>
+                    <div class="controls">
+                        <input type="number" data-ng-model="collectorNumber" id="collectorNumber" class="form-control" placeholder="Collector number" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="flavorText">Flavor text</label>
+                    <div class="controls">
+                        <textarea data-ng-model="flavorText" id="flavorText" class="form-control" placeholder="Flavor text" required>
+                        </textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="illustrator">Illustrator</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="illustrator" id="illustrator" class="form-control" placeholder="Collector number" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-default">
+                </div>
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+            </fieldset>
+        </form>
+    </div>
+</section>
