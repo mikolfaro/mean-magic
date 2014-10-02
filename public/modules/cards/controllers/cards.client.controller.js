@@ -17,6 +17,16 @@ angular.module('cards').controller('CardsController', ['$scope', '$stateParams',
                 transformsInto: this.transformsInto
 			});
 
+            if (this._type !== null) {
+                card._type = this._type;
+                if (card._type === 'creature') {
+                    card.power = this.power;
+                    card.toughness = this.toughness;
+                } else if (card._type === 'planeswalker') {
+                    card.loyalty = this.loyalty;
+                }
+            }
+
 			// Redirect after save
 			card.$save(function(response) {
 				$location.path('cards/' + response._id);
@@ -66,5 +76,18 @@ angular.module('cards').controller('CardsController', ['$scope', '$stateParams',
 				cardId: $stateParams.cardId
 			});
 		};
+
+        // Check if the card is a Creature or a Planeswalker
+        $scope.checkCardType = function() {
+            var obj = this.card || this;
+
+            if (obj.type.indexOf('Planeswalker') !== -1) {
+                obj._type = 'planeswalker';
+            } else if (obj.type.indexOf('Creature') !== -1) {
+                obj._type = 'creature';
+            } else {
+                obj._type = null;
+            }
+        };
 	}
 ]);

@@ -23,7 +23,7 @@ var CardSchema = new Schema({
     },
     convertedManaCost: {
         type: String,
-        required: true,
+        required: 'Converted mana cost cannot be blank',
         default: '0'
     },
     type: {
@@ -53,12 +53,12 @@ mongoose.model('Card', CardSchema);
 var CreatureSchema = CardSchema.extend({
     power: {
         type: String,
-        required: true,
+        required: 'Power cannot be blank',
         match: [/[\d\+-X\*]+/, 'Please fill with a valid power value']
     },
     toughness: {
         type: String,
-        required: true,
+        required: 'Toughness cannot be blank',
         match: [/[\d\+-X\*]+/, 'Please fill with a valid toughness value']
     }
 });

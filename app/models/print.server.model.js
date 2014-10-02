@@ -13,16 +13,16 @@ var PrintSchema = new Schema({
     card: {
         type: Schema.ObjectId,
         ref: 'CardSchema',
-        required: true
+        required: 'Card cannot be blank'
     },
     expansion: {
         type: Schema.ObjectId,
         ref: 'ExpansionSchema',
-        required: true
+        required: 'Card cannot be blank'
     },
     collectorNumber: {
         type: Number,
-        required: true
+        required: 'Card cannot be blank'
     },
     flavorText: {
         type: String

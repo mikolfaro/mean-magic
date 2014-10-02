@@ -19,17 +19,19 @@
         <div class="col-sm-6">
             <h3>{{ card.type }}</h3>
             <p>{{ card.rules }}</p>
+            <div class="row" ng-show="card.power !== undefined">
+                <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
+                    <h4>{{ card.power }}/{{ card.toughness }}</h4>
+                </div>
+            </div>
+            <div class="row" ng-show="card.loyalty !== undefined">
+                <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
+                    <h4>{{ card.loyalty }}</h4>
+                </div>
+            </div>
         </div>
         <div class="col-sm-6">
 
         </div>
     </div>
-	<!--<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="card.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="card.user.displayName"></span>
-		</em>
-	</small>-->
 </section>

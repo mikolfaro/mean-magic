@@ -4,15 +4,24 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-	errorHandler = require('./errors'),
-	Card = mongoose.model('Card'),
-	_ = require('lodash');
+    errorHandler = require('./errors'),
+    Card = mongoose.model('Card'),
+    Creature = mongoose.model('Creature'),
+    Planewalker = mongoose.model('Planeswalker'),
+    _ = require('lodash');
 
 /**
  * Create a Card
  */
 exports.create = function(req, res) {
-	var card = new Card(req.body);
+	var card = null;
+    if (req.body._type === 'creature') {
+        card = new Creature(req.body);
+    } else if (req.body._type === 'planeswalker') {
+        card = new Planewalker(req.body);
+    } else {
+        card = new Card(req.body);
+    }
 	card.user = req.user;
 
 	card.save(function(err) {

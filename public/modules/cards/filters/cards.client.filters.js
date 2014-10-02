@@ -33,7 +33,7 @@ angular.module('cards').filter('iconifyMana', ['ManaCostManipulator', function (
 
             '{B/R}' : 'mana_BR.png',
             '{B/G}' : 'mana_BG.png',
-            '{B/W}' : 'mana_BW.png',
+            '{W/B}' : 'mana_WB.png',
             '{B/U}' : 'mana_BU.png',
             '{R/G}' : 'mana_RG.png',
             '{R/W}' : 'mana_RW.png',
@@ -48,11 +48,11 @@ angular.module('cards').filter('iconifyMana', ['ManaCostManipulator', function (
             '{2/W}' : 'mana_2W.png',
             '{2/G}' : 'mana_2G.png',
 
-            '{UB}' : 'mana_BP.png',
-            '{UR}' : 'mana_RP.png',
+            '{BP}' : 'mana_BP.png',
+            '{RP}' : 'mana_RP.png',
             '{UP}' : 'mana_UP.png',
-            '{UW}' : 'mana_WP.png',
-            '{UG}' : 'mana_GP.png'
+            '{WP}' : 'mana_WP.png',
+            '{GP}' : 'mana_GP.png'
         };
 
         return ManaCostManipulator.split(input).map(function(value) {
