@@ -44,10 +44,15 @@
 			$httpBackend = _$httpBackend_;
 			$location = _$location_;
 
+            $httpBackend.expectGET('cards').respond([]);
+            $httpBackend.expectGET('expansions').respond([]);
+
 			// Initialize the Prints controller.
 			PrintsController = $controller('PrintsController', {
 				$scope: scope
 			});
+
+            $httpBackend.flush();
 		}));
 
 		it('$scope.find() should create an array with at least one Print object fetched from XHR', inject(function(Prints) {
@@ -93,17 +98,26 @@
 		it('$scope.create() with valid form data should send a POST request with the form input values and then locate to new object URL', inject(function(Prints) {
 			// Create a sample Print object
 			var samplePrintPostData = new Prints({
-				name: 'New Print'
+				card: '525cf204511ab578ffc00001',
+                expansion: '525cf2132fda89898bc00001',
+                collectorNumber: 12,
+                illustrator: 'Dino Bovino'
 			});
 
 			// Create a sample Print response
 			var samplePrintResponse = new Prints({
 				_id: '525cf20451979dea2c000001',
-				name: 'New Print'
+                card: '525cf204511ab578ffc00001',
+                expansion: '525cf2132fda89898bc00001',
+                collectorNumber: 12,
+                illustrator: 'Dino Bovino'
 			});
 
 			// Fixture mock form input values
-			scope.name = 'New Print';
+			scope.card = '525cf204511ab578ffc00001';
+            scope.expansion = '525cf2132fda89898bc00001';
+            scope.collectorNumber = 12;
+            scope.illustrator = 'Dino Bovino';
 
 			// Set POST response
 			$httpBackend.expectPOST('prints', samplePrintPostData).respond(samplePrintResponse);
