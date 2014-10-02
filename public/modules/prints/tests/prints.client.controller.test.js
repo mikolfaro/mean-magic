@@ -44,8 +44,25 @@
 			$httpBackend = _$httpBackend_;
 			$location = _$location_;
 
-            $httpBackend.expectGET('cards').respond([]);
-            $httpBackend.expectGET('expansions').respond([]);
+            $httpBackend.expectGET('cards').respond([
+                {
+                    _id: '525cf204511ab578ffc00001',
+                    name: 'Æther Vial',
+                    manaCost: '1',
+                    convertedManaCost: '1',
+                    type: 'Artifact',
+                    rules: 'At the beginning of your upkeep, you may put a charge counter on Æther Vial.\n\n' +
+                        'T: You may put a creature card with converted mana cost equal to the number of charge ' +
+                        'counters on Æther Vial from your hand onto the battlefield.'
+                }
+            ]);
+            $httpBackend.expectGET('expansions').respond([
+                {
+                    _id: '525cf2132fda89898bc00001',
+                    name: 'Alpha',
+                    code: 'A'
+                }
+            ]);
 
 			// Initialize the Prints controller.
 			PrintsController = $controller('PrintsController', {
@@ -114,8 +131,8 @@
 			});
 
 			// Fixture mock form input values
-			scope.card = '525cf204511ab578ffc00001';
-            scope.expansion = '525cf2132fda89898bc00001';
+			scope.cardName = 'Æther Vial';
+            scope.expansionName = 'Alpha';
             scope.collectorNumber = 12;
             scope.illustrator = 'Dino Bovino';
 

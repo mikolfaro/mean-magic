@@ -86,7 +86,8 @@ exports.list = function(req, res) { Print.find().sort('-created').populate('user
 /**
  * Print middleware
  */
-exports.printByID = function(req, res, next, id) { Print.findById(id).populate('user', 'displayName').exec(function(err, print) {
+exports.printByID = function(req, res, next, id) { Print.findById(id).populate('user', 'displayName')
+    .populate('card').populate('expansion').exec(function(err, print) {
 		if (err) return next(err);
 		if (! print) return next(new Error('Failed to load Print ' + id));
 		req.print = print ;

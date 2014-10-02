@@ -8,23 +8,34 @@ angular.module('prints').controller('PrintsController', ['$scope', '$stateParams
 		$scope.authentication = Authentication;
 
         Cards.query(function (cards) {
-            $scope.cards = cards.map(function (card) {
+            $scope.cards = cards;
+            $scope.cardNames = cards.map(function (card) {
                 return card.name;
             });
         });
 
         Expansions.query(function (expansions) {
-            $scope.expansions = expansions.map(function(expansion) {
-                return expansion.code + ' - ' + expansion.name;
+            $scope.expansions = expansions;
+            $scope.expansionNames = expansions.map(function(expansion) {
+                return expansion.name;
             });
         });
 
 		// Create new Print
 		$scope.create = function() {
-			// Create new Print object
+
+            var expansion = $scope.expansions.filter(function (expansion) {
+                return expansion.name === $scope.expansionName;
+            })[0];
+
+            var card = $scope.cards.filter(function (card) {
+                return card.name === $scope.cardName;
+            })[0];
+
+            // Create new Print object
 			var print = new Prints ({
-				card: this.card,
-                expansion: this.expansion,
+				card: card._id,
+                expansion: expansion._id,
                 collectorNumber: this.collectorNumber,
                 flavorText: this.flavorText,
                 illustrator: this.illustrator
