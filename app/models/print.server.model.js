@@ -12,12 +12,12 @@ var mongoose = require('mongoose'),
 var PrintSchema = new Schema({
     card: {
         type: Schema.ObjectId,
-        ref: 'CardSchema',
+        ref: 'Card',
         required: 'Card cannot be blank'
     },
     expansion: {
         type: Schema.ObjectId,
-        ref: 'ExpansionSchema',
+        ref: 'Expansion',
         required: 'Card cannot be blank'
     },
     collectorNumber: {
