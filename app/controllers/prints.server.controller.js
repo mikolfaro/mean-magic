@@ -72,7 +72,8 @@ exports.delete = function(req, res) {
 /**
  * List of Prints
  */
-exports.list = function(req, res) { Print.find().sort('-created').populate('user', 'displayName').exec(function(err, prints) {
+exports.list = function(req, res) { Print.find().sort('-created').populate('user', 'displayName')
+    .populate('card').populate('expansion').exec(function(err, prints) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
