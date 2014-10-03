@@ -26,8 +26,8 @@
                 </div>
             </div>
 
-            <p>{{ print.card.rules }}</p>
-            <p>{{ print.flavor }}</p>
+            <pre>{{ print.card.rules }}</pre>
+            <pre ng-show="print.flavorText">{{ print.flavorText }}</pre>
             <div class="row" ng-show="card.power !== undefined">
                 <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
                     <h4>{{ print.card.power }}/{{ print.card.toughness }}</h4>
