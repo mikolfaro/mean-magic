@@ -6,9 +6,34 @@
         <form class="form-horizontal" data-ng-submit="update()" novalidate>
             <fieldset>
                 <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
+                    <label class="control-label" for="cardName">Card</label>
                     <div class="controls">
-                        <input type="text" data-ng-model="print.name" id="name" class="form-control" placeholder="Name" required>
+                        <input type="text" class="form-control uneditable-input" id="cardName" ng-model="print.card.name" disabled />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="expansionName">Expansion</label>
+                    <div class="controls">
+                        <input type="text" class="form-control uneditable-input" id="expansionName" ng-model="print.expansion.name" disabled />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="collectorNumber">Collector number</label>
+                    <div class="controls">
+                        <input type="number" data-ng-model="print.collectorNumber" id="collectorNumber" class="form-control" placeholder="Collector number" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="flavorText">Flavor text</label>
+                    <div class="controls">
+                        <textarea data-ng-model="print.flavorText" id="flavorText" class="form-control" placeholder="Flavor text" required>
+                        </textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="illustrator">Illustrator</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="print.illustrator" id="illustrator" class="form-control" placeholder="Collector number" required>
                     </div>
                 </div>
                 <div class="form-group">
