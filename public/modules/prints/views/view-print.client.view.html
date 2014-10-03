@@ -15,37 +15,35 @@
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="row">
-                <div class="col-sm-8">
-                    <h3>{{ print.card.type }}</h3>
-                </div>
-                <div class="col-sm-4">
-                    <h3>{{ print.expansion.name }}</h3>
-                </div>
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-8">
+                <h3>{{ print.card.type }}</h3>
             </div>
-
-            <pre>{{ print.card.rules }}</pre>
-            <pre ng-show="print.flavorText">{{ print.flavorText }}</pre>
-            <div class="row" ng-show="card.power !== undefined">
-                <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
-                    <h4>{{ print.card.power }}/{{ print.card.toughness }}</h4>
-                </div>
-            </div>
-            <div class="row" ng-show="print.card.loyalty !== undefined">
-                <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
-                    <h4>{{ print.card.loyalty }}</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-offset-4 col-sm-offset-4">
-                    <p>Dino Bovino</p>
-                </div>
+            <div class="col-sm-4">
+                <h3 class="pull-right">{{ print.expansion.name }}</h3>
             </div>
         </div>
-        <div class="col-sm-6">
 
+        <pre>{{ print.card.rules }}</pre>
+        <pre ng-show="print.flavorText">{{ print.flavorText }}</pre>
+        <div class="row" ng-show="card.power !== undefined">
+            <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
+                <h4>{{ print.card.power }}/{{ print.card.toughness }}</h4>
+            </div>
         </div>
+        <div class="row" ng-show="print.card.loyalty !== undefined">
+            <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
+                <h4>{{ print.card.loyalty }}</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-offset-4 col-sm-offset-4">
+                <p>Dino Bovino</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+
     </div>
 </section>
