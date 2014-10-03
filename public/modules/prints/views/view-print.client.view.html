@@ -1,7 +1,12 @@
 <section data-ng-controller="PrintsController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h1 data-ng-bind="print.name"></h1>
-	</div>
+    <div class="page-header">
+        <div class="col-sm-8">
+            <h1 data-ng-bind="print.card.name"></h1>
+        </div>
+        <div class="col-sm-4">
+            <span ng-bind-html="print.card.manaCost|iconifyMana"></span>
+        </div>
+    </div>
 	<div class="pull-right" data-ng-show="authentication.user._id == print.user._id">
 		<a class="btn btn-primary" href="/#!/prints/{{print._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
@@ -10,12 +15,37 @@
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="print.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="print.user.displayName"></span>
-		</em>
-	</small>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h3>{{ print.card.type }}</h3>
+                </div>
+                <div class="col-sm-4">
+                    <h3>{{ print.expansion.name }}</h3>
+                </div>
+            </div>
+
+            <p>{{ print.card.rules }}</p>
+            <p>{{ print.flavor }}</p>
+            <div class="row" ng-show="card.power !== undefined">
+                <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
+                    <h4>{{ print.card.power }}/{{ print.card.toughness }}</h4>
+                </div>
+            </div>
+            <div class="row" ng-show="print.card.loyalty !== undefined">
+                <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
+                    <h4>{{ print.card.loyalty }}</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-offset-4 col-sm-offset-4">
+                    <p>Dino Bovino</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+
+        </div>
+    </div>
 </section>
