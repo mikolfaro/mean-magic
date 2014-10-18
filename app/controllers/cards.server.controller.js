@@ -8,7 +8,8 @@ var mongoose = require('mongoose'),
     Card = mongoose.model('Card'),
     Creature = mongoose.model('Creature'),
     Planewalker = mongoose.model('Planeswalker'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    https = require('https');
 
 /**
  * Create a Card
@@ -90,6 +91,36 @@ exports.list = function(req, res) { Card.find().sort('-created').populate('user'
 			res.jsonp(cards);
 		}
 	});
+};
+
+/**
+ * Import cards
+ */
+exports.importAll = function(req, res) {
+    var resolve = function (url, callback) {
+        https.get(url, function(response) {
+            console.log(url);
+            console.log(response.statusCode);
+            console.log('HEADERS: ' + JSON.stringify(response.headers));
+            if (response.statusCode === 301 || response.statusCode === 302) {
+                resolve(response.headers.location, callback);
+            } else {
+                callback(response);
+            }
+        });
+    };
+
+    console.log('Importing from: ' + req.targetUrl);
+    resolve(req.targetUrl, function(response) {
+        var content = '';
+        response.on('data', function(chunk) {
+            content += chunk;
+        });
+        response.on('end', function () {
+            // var writtenExpansions = importCards(JSON.parse(content).Patches);
+            res.jsonp({ expansions: 'something' });
+        });
+    });
 };
 
 /**

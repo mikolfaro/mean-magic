@@ -9,6 +9,9 @@ module.exports = function(app) {
 		.get(cards.list)
 		.post(users.requiresLogin, cards.create);
 
+    app.route('/cards/import')
+        .post(cards.importAll);
+
 	app.route('/cards/:cardId')
 		.get(cards.read)
 		.put(users.requiresLogin, cards.hasAuthorization, cards.update)

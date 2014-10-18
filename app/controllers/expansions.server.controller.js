@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors'),
 	Expansion = mongoose.model('Expansion'),
-	_ = require('lodash');
+	_ = require('lodash'),
+    https = require('https');
 
 /**
  * Create a Expansion
@@ -81,6 +82,60 @@ exports.list = function(req, res) { Expansion.find().sort('-created').populate('
 			res.jsonp(expansions);
 		}
 	});
+};
+
+/**
+ * Import Expansions
+ */
+var importExpansions = function (expansions) {
+    var writtenExpansions = [];
+    expansions.forEach(function (toBeImportedExpansion) {
+        Expansion.findOne({ code: toBeImportedExpansion.Code }, function (err, expansion) {
+            if (!expansion) {
+                expansion = new Expansion({
+                    name: toBeImportedExpansion.Name,
+                    code: toBeImportedExpansion.Code
+                });
+                expansion.save(function (err) {
+                    if (err) {
+                        console.log('Failed import: ' + expansion.name);
+                    } else {
+                        writtenExpansions.push(expansion.name);
+                    }
+                });
+            }
+        });
+    });
+
+    return writtenExpansions;
+};
+
+exports.importAll = function(req, res) {
+    var resolve = function (url, callback) {
+        https.get(url, function(response) {
+            console.log(url);
+            console.log(response.statusCode);
+            console.log('HEADERS: ' + JSON.stringify(response.headers));
+            if (response.statusCode === 301 || response.statusCode === 302) {
+                resolve(response.headers.location, callback);
+            } else {
+                callback(response);
+            }
+        });
+    };
+
+    var url = 'https://sites.google.com/site/mtgfamiliar/manifests/patches.json';
+    console.log('Importing from: ' + url);
+    resolve(url, function(response) {
+        var content = '';
+        response.on('data', function(chunk) {
+            content += chunk;
+        });
+        response.on('end', function () {
+            var writtenExpansions = importExpansions(JSON.parse(content).Patches);
+            res.jsonp({ expansions: writtenExpansions });
+        });
+    });
 };
 
 /**
