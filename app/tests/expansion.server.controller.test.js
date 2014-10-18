@@ -19,16 +19,16 @@ describe('Expansion Controller Unit Tests:', function() {
         nock('https://sites.google.com')
             .get('/site/mtgfamiliar/manifests/patches.json')
             .reply(200, {
-                "Patches": [
+                'Patches': [
                     {
-                        "Name": "An Expansion",
-                        "URL": "https:\/\/sites.google.com\/site\/mtgfamiliar\/patches\/AXP.json.gzip",
-                        "Code": "AXP"
+                        'Name': 'An Expansion',
+                        'URL': 'https:\/\/sites.google.com\/site\/mtgfamiliar\/patches\/AXP.json.gzip',
+                        'Code': 'AXP'
                     },
                     {
-                        "Name": "An Other Expansion",
-                        "URL": "https:\/\/sites.google.com\/site\/mtgfamiliar\/patches\/OXP.json.gzip",
-                        "Code": "OXP"
+                        'Name': 'An Other Expansion',
+                        'URL': 'https:\/\/sites.google.com\/site\/mtgfamiliar\/patches\/OXP.json.gzip',
+                        'Code': 'OXP'
                     }
                 ]
             });

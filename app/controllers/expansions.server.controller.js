@@ -113,9 +113,6 @@ var importExpansions = function (expansions) {
 exports.importAll = function(req, res) {
     var resolve = function (url, callback) {
         https.get(url, function(response) {
-            console.log(url);
-            console.log(response.statusCode);
-            console.log('HEADERS: ' + JSON.stringify(response.headers));
             if (response.statusCode === 301 || response.statusCode === 302) {
                 resolve(response.headers.location, callback);
             } else {
