@@ -26,12 +26,12 @@
         }));
 
         it('ManaCostManipulatpr.split() should split the mana cost in representable elements', function () {
-            expect(ManaCostManipulator.split('2RR')).toEqual(['2', 'R', 'R']);
-            expect(ManaCostManipulator.split('2{WP}')).toEqual(['2', '{WP}']);
-            expect(ManaCostManipulator.split('{2/B}{2/B}{2/B}')).toEqual(['{2/B}', '{2/B}', '{2/B}']);
-            expect(ManaCostManipulator.split('2{G/U}W')).toEqual(['2', '{G/U}', 'W']);
-            expect(ManaCostManipulator.split('X1B')).toEqual(['X', '1', 'B']);
-            expect(ManaCostManipulator.split('14')).toEqual(['14']);
+            expect(ManaCostManipulator.split('{2}{R}{R}')).toEqual(['{2}', '{R}', '{R}']);
+            expect(ManaCostManipulator.split('{2}{WP}')).toEqual(['{2}', '{WP}']);
+            expect(ManaCostManipulator.split('{2B}{2B}{2B}')).toEqual(['{2B}', '{2B}', '{2B}']);
+            expect(ManaCostManipulator.split('{2}{GU}{W}')).toEqual(['{2}', '{GU}', '{W}']);
+            expect(ManaCostManipulator.split('{X}{1}{B}')).toEqual(['{X}', '{1}', '{B}']);
+            expect(ManaCostManipulator.split('{14}')).toEqual(['{14}']);
         });
     });
 }());
