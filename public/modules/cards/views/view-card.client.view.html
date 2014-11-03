@@ -17,7 +17,7 @@
 	</div>
     <div class="col-sm-6">
         <h3>{{ card.type }}</h3>
-        <pre>{{ card.rules }}</pre>
+        <p ng-bind-html="card.rules | iconifyMana"></p>
         <div class="row" ng-show="card.power !== undefined">
             <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
                 <h4>{{ card.power }}/{{ card.toughness }}</h4>
