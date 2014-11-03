@@ -68,5 +68,17 @@ angular.module('cards')
                     return '<img class="mana" src="modules/cards/img/mana/' + manaMap[value] + '" alt="' + value + '" />';
                 }).join('');
             });
-        }
-}]);
+        };
+    }])
+
+    .filter('markReminderText', [function () {
+        return function (reminderText) {
+            if (!reminderText || reminderText.length === 0) {
+                return '';
+            }
+
+            return reminderText.replace(/(\(.*?\))/g, function (matched) {
+                return '<span class="reminder-text">' + matched + '</span>';
+            });
+        };
+    }]);
