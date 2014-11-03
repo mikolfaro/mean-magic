@@ -7,9 +7,11 @@ var mongoose = require('mongoose'),
     errorHandler = require('./errors'),
     Card = mongoose.model('Card'),
     Creature = mongoose.model('Creature'),
-    Planewalker = mongoose.model('Planeswalker'),
+    Planeswalker = mongoose.model('Planeswalker'),
     _ = require('lodash'),
-    https = require('https');
+    https = require('https'),
+    zlib = require('zlib'),
+    JSONStream = require('JSONStream');
 
 /**
  * Create a Card
@@ -19,7 +21,7 @@ exports.create = function(req, res) {
     if (req.body._type === 'creature') {
         card = new Creature(req.body);
     } else if (req.body._type === 'planeswalker') {
-        card = new Planewalker(req.body);
+        card = new Planeswalker(req.body);
     } else {
         card = new Card(req.body);
     }
@@ -96,12 +98,45 @@ exports.list = function(req, res) { Card.find().sort('-created').populate('user'
 /**
  * Import cards
  */
+var importCards = function (toBeImportedCards) {
+    var writtenCards = [];
+    toBeImportedCards.forEach(function (toBeImportedCard) {
+        Card.findOne({ name: toBeImportedCard.a }, function (err, card) {
+            if (!card) {
+                if (toBeImportedCard.c.indexOf('Creature') > -1) {
+                    card = new Creature({
+                        power: toBeImportedCard.g,
+                        toughness: toBeImportedCard.h
+                    });
+                } else if (toBeImportedCard.c.indexOf('Planeswalker') > -1) {
+                    card = new Planeswalker({
+                        loyalty: toBeImportedCard.i
+                    });
+                } else {
+                    card = new Card();
+                }
+                card.name = toBeImportedCard.a;
+                card.manaCost = toBeImportedCard.e;
+                card.convertedManaCost = toBeImportedCard.f;
+                card.type = toBeImportedCard.c;
+                card.rules = toBeImportedCard.j;
+
+                card.save(function (err) {
+                    if (err) {
+                        console.log ('Failed import: ' + card.name);
+                    } else {
+                        writtenCards.push(card.name);
+                    }
+                });
+            }
+        });
+    });
+    return writtenCards;
+};
+
 exports.importAll = function(req, res) {
     var resolve = function (url, callback) {
         https.get(url, function(response) {
-            console.log(url);
-            console.log(response.statusCode);
-            console.log('HEADERS: ' + JSON.stringify(response.headers));
             if (response.statusCode === 301 || response.statusCode === 302) {
                 resolve(response.headers.location, callback);
             } else {
@@ -110,16 +145,17 @@ exports.importAll = function(req, res) {
         });
     };
 
-    console.log('Importing from: ' + req.targetUrl);
-    resolve(req.targetUrl, function(response) {
-        var content = '';
-        response.on('data', function(chunk) {
-            content += chunk;
-        });
-        response.on('end', function () {
-            // var writtenExpansions = importCards(JSON.parse(content).Patches);
-            res.jsonp({ expansions: 'something' });
-        });
+    console.log('Importing from: ' + req.body.targetUrl);
+
+    resolve(req.body.targetUrl, function(response) {
+        response
+            .pipe(zlib.createGunzip())
+            .pipe(JSONStream.parse(['o']))
+            .on('root', function (root, count) {
+                var cards = importCards(root.t.p.o);
+                res.write(JSON.stringify(cards));
+                res.end();
+            });
     });
 };
 
