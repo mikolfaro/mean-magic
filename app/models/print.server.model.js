@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+    paginate = require('mongoose-paginate'),
 	Schema = mongoose.Schema;
 
 /**
@@ -58,4 +59,5 @@ PrintSchema.pre('save', true, function (next, done) {
         });
 });
 
+PrintSchema.plugin(paginate, {});
 mongoose.model('Print', PrintSchema);

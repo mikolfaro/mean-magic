@@ -87,17 +87,17 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) {
     Card
         .paginate({}, req.query.page, req.query.count, function (err, pageCount, cards, itemCount) {
-            if (err) {
-                return res.status(400).send({
-                    message: errorHandler.getErrorMessage(err)
-                });
-            } else {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
                 res.setHeader('X-Page-Count', pageCount);
                 res.setHeader('X-Item-Count', itemCount);
                 res.jsonp(cards);
                 res.end();
             }
-        }, { populate: ['user', 'displayName'], sortBy: { name : 1} });
+        }, { populate: ['user', 'displayName'], sortBy: { name: 1} });
 };
 
 /**

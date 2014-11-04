@@ -77,16 +77,20 @@ exports.delete = function(req, res) {
 /**
  * List of Prints
  */
-exports.list = function(req, res) { Print.find().sort('-created').populate('user', 'displayName')
-    .populate('card').populate('expansion').exec(function(err, prints) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(prints);
-		}
-	});
+exports.list = function(req, res) {
+    Print
+        .paginate({}, req.query.page, req.query.count, function (err, pageCount, prints, itemCount) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+                res.setHeader('X-Page-Count', pageCount);
+                res.setHeader('X-Item-Count', itemCount);
+                res.jsonp(prints);
+                res.end();
+            }
+    	}, { populate: ['card', 'expansion', 'user', 'displayName'], sortBy: { expansion: 1, collectorNumber: 1} });
 };
 
 /**
