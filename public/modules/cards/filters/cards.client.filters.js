@@ -39,7 +39,7 @@ angular.module('cards')
                 '{BU}' : 'mana_BU.png',
                 '{RG}' : 'mana_RG.png',
                 '{RW}' : 'mana_RW.png',
-                '{RU}' : 'mana_RU.png',
+                '{UR}' : 'mana_UR.png',
                 '{GW}' : 'mana_GW.png',
                 '{GU}' : 'mana_GU.png',
                 '{WU}' : 'mana_WU.png',
