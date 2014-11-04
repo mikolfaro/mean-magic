@@ -78,8 +78,15 @@ exports.delete = function(req, res) {
  * List of Prints
  */
 exports.list = function(req, res) {
+    console.log('Searching for ' + req.query.card);
+
+    var fields = {};
+    if (req.query.card) {
+        fields.card = req.query.card;
+    }
+
     Print
-        .paginate({}, req.query.page, req.query.count, function (err, pageCount, prints, itemCount) {
+        .paginate(fields, req.query.page, req.query.count, function (err, pageCount, prints, itemCount) {
 			if (err) {
 				return res.status(400).send({
 					message: errorHandler.getErrorMessage(err)
@@ -102,7 +109,6 @@ var importPrints = function (toBeImportedPrints) {
         if (!expansion) {
             console.log('Expansion ' + toBeImportedPrints[0].b + ' not found');
         } else {
-            console.log('Importing prints of ' + expansion.name);
             toBeImportedPrints.forEach(function (toBeImportedPrint) {
                 Card.findOne({ name: toBeImportedPrint.a}, function (err, card) {
                     if (!card) {
@@ -126,8 +132,10 @@ var importPrints = function (toBeImportedPrints) {
                                             writtenPrints.push(card.name);
                                         }
                                     });
+                                } else {
+                                    console.log('Card ' + card.name + ' already present as ' + print._id);
                                 }
-                        });
+                            });
                     }
                 });
             });
