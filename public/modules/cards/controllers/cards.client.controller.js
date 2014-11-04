@@ -1,8 +1,8 @@
 'use strict';
 
 // Cards controller
-angular.module('cards').controller('CardsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Cards',
-	function($scope, $stateParams, $location, Authentication, Cards ) {
+angular.module('cards').controller('CardsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Cards', 'Prints',
+	function($scope, $stateParams, $location, Authentication, Cards, Prints ) {
 		$scope.authentication = Authentication;
 
 		// Create new Card
@@ -84,7 +84,19 @@ angular.module('cards').controller('CardsController', ['$scope', '$stateParams',
 			$scope.card = Cards.get({ 
 				cardId: $stateParams.cardId
 			});
+            $scope.prints = Prints.query({
+                card: $stateParams.cardId
+            }, function (prints) {
+                if (prints) {
+                    $scope.print = prints[0];
+                }
+            });
 		};
+        // Select expansion
+        $scope.changePrint = function(print) {
+            console.log(print);
+            $scope.print = print;
+        };
 
         // Check if the card is a Creature or a Planeswalker
         $scope.checkCardType = function() {

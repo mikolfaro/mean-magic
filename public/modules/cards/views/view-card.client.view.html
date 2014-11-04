@@ -1,6 +1,6 @@
 <section data-ng-controller="CardsController" data-ng-init="findOne()">
 	<div class="page-header">
-
+        <h1 ng-show="print.expansion">{{ print.expansion.name }} - {{ print.collectorNumber }}</h1>
 	</div>
 	<div class="pull-right" data-ng-show="authentication.user._id == card.user._id">
 		<a class="btn btn-primary" href="/#!/cards/{{card._id}}/edit">
@@ -10,6 +10,7 @@
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>
+
     <div class="col-sm-6">
         <div class="row">
             <div class="col-sm-6">
@@ -19,19 +20,36 @@
                 <span ng-bind-html="card.manaCost|iconifyMana" class="pull-right mana"></span>
 			</div>
 		</div>
+
 		<div>
-			<h3>{{ card.type }}</h3>
+            <div class="row">
+                <div class="col-sm-8">
+					<h3>{{ card.type }}</h3>
+                </div>
+                <div class="col-sm-4">
+                    <h3 ng-show="print" ng-bind-html="print.expansion.code|iconifyExpansion" class="pull-right"></h3>
+                </div>
+            </div>
+
             <p class="rules" ng-bind-html="card.rules | markReminderText | iconifyMana"></p>
-			<div class="row" ng-show="card.power !== undefined">
-				<div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
-					<h4>{{ card.power }}/{{ card.toughness }}</h4>
+            <p class="flavor-text" ng-show="print" ng-bind-html="print.flavorText"></p>
+
+            <div class="row">
+                <div class="col-xs-offset-3 col-sm-offset-4 col-xs-4 col-sm-4">
+                    <p ng-show="print" class="illustrator">{{ print.illustrator }}</p>
+                </div>
+
+				<div class="col-xs-offset-2 col-sm-offset-2 col-xs-1 col-sm-2" >
+					<h4 class="power-toughness" ng-show="print.card.power">{{ card.power }}/{{ card.toughness }}</h4>
+					<h4 class="loyalty" ng-show="print.card.loyalty">{{ card.loyalty }}</h4>
 				</div>
 			</div>
-			<div class="row" ng-show="card.loyalty !== undefined">
-				<div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
-					<h4>{{ card.loyalty }}</h4>
-				</div>
-            </div>
+		</div>
+
+        <div>
+            <ul class="list-inline">
+                <li ng-repeat="print in prints" ><a href="#" ng-click="changePrint(print)">{{ print.expansion.code }} - {{ print.collectorNumber }}</a></li>
+            </ul>
         </div>
     </div>
     <div class="col-sm-6">
