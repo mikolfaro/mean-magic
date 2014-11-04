@@ -84,15 +84,20 @@ exports.delete = function(req, res) {
 /**
  * List of Cards
  */
-exports.list = function(req, res) { Card.find().sort('-created').populate('user', 'displayName').exec(function(err, cards) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(cards);
-		}
-	});
+exports.list = function(req, res) {
+    var page = 30;
+    var count = 50;
+
+    Card
+        .paginate({}, page, count, function (err, pageCount, cards) {
+            if (err) {
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            } else {
+                res.jsonp(cards);
+            }
+        }, { populate: ['user', 'displayName'], sortBy: { 'name' : 1} });
 };
 
 /**

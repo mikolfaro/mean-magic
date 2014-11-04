@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
     extend = require('mongoose-schema-extend'),
     uniqueValidator = require('mongoose-unique-validator'),
+    paginate = require('mongoose-paginate'),
     Schema = mongoose.Schema;
 
 /**
@@ -48,6 +49,7 @@ var CardSchema = new Schema({
 }, { discriminatoryKey: '_type', collection: 'cards' });
 
 CardSchema.plugin(uniqueValidator, { message: 'Card name already used' });
+CardSchema.plugin(paginate);
 mongoose.model('Card', CardSchema);
 
 var CreatureSchema = CardSchema.extend({
