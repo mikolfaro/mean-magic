@@ -1,12 +1,7 @@
 <section data-ng-controller="PrintsController" data-ng-init="findOne()">
-    <div class="page-header">
-        <div class="col-sm-8">
-            <h1 data-ng-bind="print.card.name"></h1>
-        </div>
-        <div class="col-sm-4">
-            <span ng-bind-html="print.card.manaCost|iconifyMana"></span>
-        </div>
-    </div>
+	<div class="page-header">
+        <h1 ng-show="print.expansion">{{ print.expansion.name }} - {{ print.collectorNumber }}</h1>
+	</div>
 	<div class="pull-right" data-ng-show="authentication.user._id == print.user._id">
 		<a class="btn btn-primary" href="/#!/prints/{{print._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
@@ -15,34 +10,43 @@
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>
+
     <div class="col-sm-6">
         <div class="row">
-            <div class="col-sm-8">
-                <h3>{{ print.card.type }}</h3>
+            <div class="col-sm-6">
+				<h1 data-ng-bind="print.card.name"></h1>
             </div>
-            <div class="col-sm-4">
-                <h3 class="pull-right">{{ print.expansion.name }}</h3>
-            </div>
-        </div>
+			<div class="col-sm-6">
+                <span ng-bind-html="print.card.manaCost|iconifyMana" class="pull-right mana"></span>
+			</div>
+		</div>
 
-        <pre>{{ print.card.rules }}</pre>
-        <pre ng-show="print.flavorText">{{ print.flavorText }}</pre>
-        <div class="row" ng-show="card.power !== undefined">
-            <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
-                <h4>{{ print.card.power }}/{{ print.card.toughness }}</h4>
+		<div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <h3>{{ print.card.type }}</h3>
+                </div>
+                <div class="col-sm-4">
+            		<h3 class="pull-right">{{ print.expansion.code }}</h3>
+                </div>
             </div>
-        </div>
-        <div class="row" ng-show="print.card.loyalty !== undefined">
-            <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
-                <h4>{{ print.card.loyalty }}</h4>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-offset-4 col-sm-offset-4">
-                <p>Dino Bovino</p>
-            </div>
-        </div>
-    </div>
+
+			<p class="rules" ng-bind-html="print.card.rules | markReminderText | iconifyMana"></p>
+            <p class="flavor-text" ng-bind-html="print.flavorText"></p>
+
+			<div class="row">
+                <div class="col-xs-offset-3 col-sm-offset-4 col-xs-4 col-sm-4">
+                    <p class="illustrator">{{ print.illustrator }}</p>
+                </div>
+
+                <div class="col-xs-offset-2 col-sm-offset-2 col-xs-1 col-sm-2" >
+                    <h4 class="power-toughness" ng-show="print.card.power">{{ print.card.power }}/{{ print.card.toughness }}</h4>
+                    <h4 class="loyalty" ng-show="print.card.loyalty">{{ print.card.loyalty }}</h4>
+                </div>
+			</div>
+
+    	</div>
+	</div>
     <div class="col-sm-6">
 
     </div>
