@@ -65,9 +65,18 @@ angular.module('cards').controller('CardsController', ['$scope', '$stateParams',
 			});
 		};
 
-		// Find a list of Cards
+        // Prepare pagination defaults
+        $scope.page = 1;
+        $scope.count = 10;
+        $scope.pageChanged = function () {
+            $scope.find();
+        };
+
+        // Find a list of Cards
 		$scope.find = function() {
-			$scope.cards = Cards.query();
+			$scope.cards = Cards.query({ page: $scope.page, count: $scope.count }, function (cards, headers) {
+                $scope.totalItems = headers('X-Item-Count');
+            });
 		};
 
 		// Find existing Card

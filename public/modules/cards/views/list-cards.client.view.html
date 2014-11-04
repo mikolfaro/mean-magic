@@ -16,6 +16,14 @@
                 </div>
             </div>
         </a>
+
+        <pagination
+                class="pull-right pagination-sm" boundary-links="true" max-size="5"
+                previous-text="&lsaquo;" next-text="&rsaquo;"
+                first-text="&laquo;" last-text="&raquo;"
+                total-items="totalItems" items-per-page="count"
+                ng-show="cards.length > 0"
+                ng-model="page" ng-change="pageChanged()" ></pagination>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!cards.$resolved || cards.length">
     	No Cards yet, why don't you <a href="/#!/cards/create">create one</a>?
