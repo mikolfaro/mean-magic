@@ -9,10 +9,6 @@ angular.module('prints')
                 return '';
             }
 
-            var codeMap = {
-                'ARB' : 'ARB_symbol.png'
-            };
-
-            return '<img class="expansion-symbol" src="modules/expansions/img/symbol/' + codeMap[expansionCode] + '" alt="' + expansionCode + '" />';
-        }
+            return '<img class="expansion-symbol" src="modules/expansions/img/symbol/' + expansionCode + '_symbol.png" alt="' + expansionCode + '" />';
+        };
     }]);
