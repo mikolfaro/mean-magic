@@ -85,19 +85,19 @@ exports.delete = function(req, res) {
  * List of Cards
  */
 exports.list = function(req, res) {
-    var page = 30;
-    var count = 50;
-
     Card
-        .paginate({}, page, count, function (err, pageCount, cards) {
+        .paginate({}, req.query.page, req.query.count, function (err, pageCount, cards, itemCount) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
+                res.setHeader('X-Page-Count', pageCount);
+                res.setHeader('X-Item-Count', itemCount);
                 res.jsonp(cards);
+                res.end();
             }
-        }, { populate: ['user', 'displayName'], sortBy: { 'name' : 1} });
+        }, { populate: ['user', 'displayName'], sortBy: { name : 1} });
 };
 
 /**
