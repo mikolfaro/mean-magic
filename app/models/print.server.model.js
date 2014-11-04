@@ -40,6 +40,7 @@ var PrintSchema = new Schema({
 	}
 });
 
+// There must be only one collector number for each expansion
 PrintSchema.pre('save', true, function (next, done) {
     next();
     var self = this;

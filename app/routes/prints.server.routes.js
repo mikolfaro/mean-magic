@@ -9,6 +9,9 @@ module.exports = function(app) {
 		.get(prints.list)
 		.post(users.requiresLogin, prints.create);
 
+    app.route('/prints/import')
+        .post(prints.importAll);
+
 	app.route('/prints/:printId')
 		.get(prints.read)
 		.put(users.requiresLogin, prints.hasAuthorization, prints.update)
