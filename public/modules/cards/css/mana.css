@@ -1,3 +1,7 @@
+img.mana {
+    max-height: 44px;
+}
+
 p.rules img.mana {
     height: 1em;
 }

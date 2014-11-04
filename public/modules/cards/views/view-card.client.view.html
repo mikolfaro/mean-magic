@@ -1,11 +1,6 @@
 <section data-ng-controller="CardsController" data-ng-init="findOne()">
 	<div class="page-header">
-        <div class="col-sm-8">
-            <h1 data-ng-bind="card.name"></h1>
-        </div>
-        <div class="col-sm-4">
-            <span ng-bind-html="card.manaCost|iconifyMana"></span>
-        </div>
+
 	</div>
 	<div class="pull-right" data-ng-show="authentication.user._id == card.user._id">
 		<a class="btn btn-primary" href="/#!/cards/{{card._id}}/edit">
@@ -15,17 +10,27 @@
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>
-    <div class="col-sm-6">
-        <h3>{{ card.type }}</h3>
-        <p class="rules" ng-bind-html="card.rules | markReminderText | iconifyMana"></p>
-        <div class="row" ng-show="card.power !== undefined">
-            <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
-                <h4>{{ card.power }}/{{ card.toughness }}</h4>
+    <div class="col-sm-6 card-detail">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1 data-ng-bind="card.name"></h1>
+            </div>
+            <div class="col-sm-6">
+                <span ng-bind-html="card.manaCost|iconifyMana" class="pull-right mana"></span>
             </div>
         </div>
-        <div class="row" ng-show="card.loyalty !== undefined">
-            <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
-                <h4>{{ card.loyalty }}</h4>
+        <div>
+            <h3>{{ card.type }}</h3>
+            <p class="rules" ng-bind-html="card.rules | markReminderText | iconifyMana"></p>
+            <div class="row" ng-show="card.power !== undefined">
+                <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
+                    <h4>{{ card.power }}/{{ card.toughness }}</h4>
+                </div>
+            </div>
+            <div class="row" ng-show="card.loyalty !== undefined">
+                <div class="col-xs-offset-9 col-sm-offset-10 col-xs-4 col-sm-3">
+                    <h4>{{ card.loyalty }}</h4>
+                </div>
             </div>
         </div>
     </div>

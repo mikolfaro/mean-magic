@@ -1,3 +1,7 @@
 .reminder-text {
     font-style: italic;
 }
+
+.card-detail span.mana {
+    margin-top: 20px;
+}
