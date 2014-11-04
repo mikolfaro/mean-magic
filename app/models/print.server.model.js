@@ -22,7 +22,7 @@ var PrintSchema = new Schema({
         required: 'Card cannot be blank'
     },
     collectorNumber: {
-        type: Number,
+        type: String,
         required: 'Card cannot be blank'
     },
     flavorText: {
