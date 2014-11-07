@@ -1,8 +1,8 @@
 'use strict';
 
 // Cards controller
-angular.module('cards').controller('CardsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Cards', 'Prints',
-	function($scope, $stateParams, $location, Authentication, Cards, Prints ) {
+angular.module('cards').controller('CardsController', ['$scope', '$stateParams', '$location', '$state', 'Authentication', 'Cards', 'Prints',
+	function($scope, $stateParams, $location, $state, Authentication, Cards, Prints ) {
 		$scope.authentication = Authentication;
 
 		// Create new Card
@@ -110,5 +110,12 @@ angular.module('cards').controller('CardsController', ['$scope', '$stateParams',
                 obj._type = null;
             }
         };
+
+		// Transform card
+		$scope.transform = function () {
+			if ($scope.card.transformsInto) {
+				$state.go('viewCard', { 'cardId':$scope.card.transformsInto._id });
+			}
+		}
 	}
 ]);

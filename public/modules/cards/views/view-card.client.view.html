@@ -55,7 +55,7 @@
         </div>
 
         <div class="pull-right" ng-show="card.transformsInto">
-            <a ng-href="/#!/cards/{{ card.transformsInto._id }}">Transform into {{ card.transformsInto.name }}</a>
+            <button class="btn btn-info"  ng-click="transform()">Transform into {{ card.transformsInto.name }}</button>
         </div>
     </div>
     <div class="col-sm-6">
