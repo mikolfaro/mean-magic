@@ -48,11 +48,17 @@
 
         <div>
             <ul class="list-inline">
-                <li ng-repeat="print in prints" ><a href="#" ng-click="changePrint(print)">{{ print.expansion.code }} - {{ print.collectorNumber }}</a></li>
+                <li ng-repeat="print in prints" >
+                    <button class="btn" ng-click="changePrint(print)">{{ print.expansion.code }} - {{ print.collectorNumber }}</button>
+                </li>
             </ul>
+        </div>
+
+        <div class="pull-right" ng-show="card.transformsInto">
+            <a ng-href="/#!/cards/{{ card.transformsInto._id }}">Transform into {{ card.transformsInto.name }}</a>
         </div>
     </div>
     <div class="col-sm-6">
-
+        <img class="center-block card" ng-src="http://www.magiccards.info/scans/en/{{ print.expansion.code|lowercase }}/{{ print.collectorNumber }}.jpg">
     </div>
 </section>

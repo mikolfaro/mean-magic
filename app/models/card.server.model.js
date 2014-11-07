@@ -36,7 +36,7 @@ var CardSchema = new Schema({
     },
     transformsInto: {
         type: Schema.ObjectId,
-        ref: 'CardSchema'
+        ref: 'Card'
     },
     created: {
         type: Date,

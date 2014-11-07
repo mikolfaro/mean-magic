@@ -42,7 +42,7 @@ exports.create = function(req, res) {
  * Show the current Card
  */
 exports.read = function(req, res) {
-	res.jsonp(req.card);
+    res.jsonp(req.card);
 };
 
 /**
@@ -167,12 +167,17 @@ exports.importAll = function(req, res) {
 /**
  * Card middleware
  */
-exports.cardByID = function(req, res, next, id) { Card.findById(id).populate('user', 'displayName').exec(function(err, card) {
-		if (err) return next(err);
-		if (! card) return next(new Error('Failed to load Card ' + id));
-		req.card = card ;
-		next();
-	});
+exports.cardByID = function(req, res, next, id) {
+    Card
+        .findById(id)
+        .populate('user', 'displayName')
+        .populate('transformsInto')
+        .exec(function(err, card) {
+            if (err) return next(err);
+            if (! card) return next(new Error('Failed to load Card ' + id));
+            req.card = card ;
+            next();
+	    });
 };
 
 /**
