@@ -5,3 +5,36 @@
 .card-detail span.mana {
     margin-top: 20px;
 }
+
+/* Transform card*/
+section.container {
+    position: relative;
+}
+
+[data-ui-view].ng-enter, [data-ui-view].ng-leave {
+    background: #ffffff;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    transition: 10s;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+[data-ui-view].ng-enter {
+    transform: rotateY(180deg);
+}
+
+[data-ui-view].ng-enter-active {
+    transform: rotateY(0deg);
+}
+
+[data-ui-view].ng-leave {
+    z-index: 2;
+    transform: rotateY(0deg);
+}
+
+[data-ui-view].ng-leave-active {
+    transform: rotateY(180deg);
+}

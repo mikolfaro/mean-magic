@@ -1,4 +1,4 @@
-<section data-ng-controller="CardsController" data-ng-init="findOne()">
+<section data-ng-controller="CardsController" data-ng-init="findOne()"  ng-class="{ transformable: card.transformsInto }">
 	<div class="page-header">
         <h1 ng-show="print.expansion">{{ print.expansion.name }} - {{ print.collectorNumber }}</h1>
 	</div>
