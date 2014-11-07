@@ -116,6 +116,6 @@ angular.module('cards').controller('CardsController', ['$scope', '$stateParams',
 			if ($scope.card.transformsInto) {
 				$state.go('viewCard', { 'cardId':$scope.card.transformsInto._id });
 			}
-		}
+		};
 	}
 ]);

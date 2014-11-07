@@ -1,4 +1,4 @@
-<section data-ng-controller="CardsController" data-ng-init="findOne()"  ng-class="{ transformable: card.transformsInto }">
+<section data-ng-controller="CardsController" data-ng-init="findOne()">
 	<div class="page-header">
         <h1 ng-show="print.expansion">{{ print.expansion.name }} - {{ print.collectorNumber }}</h1>
 	</div>
@@ -58,7 +58,7 @@
             <button class="btn btn-info"  ng-click="transform()">Transform into {{ card.transformsInto.name }}</button>
         </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6 transformable">
         <img class="center-block card" ng-src="http://www.magiccards.info/scans/en/{{ print.expansion.code|lowercase }}/{{ print.collectorNumber }}.jpg">
     </div>
 </section>

@@ -6,7 +6,8 @@
     margin-top: 20px;
 }
 
-/* Transform card*/
+/* Transform card */
+/*
 section.container {
     position: relative;
 }
@@ -38,3 +39,4 @@ section.container {
 [data-ui-view].ng-leave-active {
     transform: rotateY(180deg);
 }
+*/
