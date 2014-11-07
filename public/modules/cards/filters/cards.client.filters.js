@@ -63,7 +63,7 @@ angular.module('cards')
                 '{T}' : 'mana_T.png'
             };
 
-            return text.replace(/(\{[\{\dWXURBG\}]*\})/g, function (matched) {
+            return text.replace(/(\{[\{\dWXTURBG\}]*\})/g, function (matched) {
                 return ManaCostManipulator.split(matched).map(function(value) {
                     return '<img class="mana" src="modules/cards/img/mana/' + manaMap[value] + '" alt="' + value + '" />';
                 }).join('');
