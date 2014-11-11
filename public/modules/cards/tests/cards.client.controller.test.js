@@ -51,23 +51,20 @@
 		}));
 
 		it('$scope.find() should create an array with at least one Card object fetched from XHR', inject(function(Cards) {
-			// Create sample Card using the Cards service
-			var sampleCard = new Cards({
-				name: 'New Card'
-			});
-
-			// Create a sample Cards array that includes the new Card
-			var sampleCards = [sampleCard];
+			var aCard = new Cards({ name: 'New Card', manaCost: '', convertedManaCost: '0', type: 'Artifact' });
 
 			// Set GET response
-			$httpBackend.expectGET('cards').respond(sampleCards);
+			$httpBackend
+				.expectGET('cards?count=10&page=1')
+				.respond([aCard], { 'X-Item-Count': 1 });
 
 			// Run controller functionality
 			scope.find();
 			$httpBackend.flush();
 
 			// Test scope value
-			expect(scope.cards).toEqualData(sampleCards);
+			expect(scope.cards).toEqualData([aCard]);
+			expect(scope.totalItems).toEqual(1);
 		}));
 
 		it('$scope.findOne() should create an array with one Card object fetched from XHR using a cardId URL parameter', inject(function(Cards) {
@@ -81,6 +78,7 @@
 
 			// Set GET response
 			$httpBackend.expectGET(/cards\/([0-9a-fA-F]{24})$/).respond(sampleCard);
+			$httpBackend.expectGET('prints?card=525a8422f6d0f87f0e407a33').respond({});
 
 			// Run controller functionality
 			scope.findOne();
