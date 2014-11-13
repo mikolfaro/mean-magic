@@ -24,9 +24,9 @@ angular.module('prints').controller('PrintsController', ['$scope', '$stateParams
 		// Create new Print
 		$scope.create = function() {
 
-            var expansion = $scope.expansions.filter(function (expansion) {
-                return expansion.name === $scope.expansionName;
-            })[0];
+            //var expansion = $scope.expansions.filter(function (expansion) {
+            //    return expansion.name === $scope.expansionName;
+            //})[0];
 
             var card = $scope.cards.filter(function (card) {
                 return card.name === $scope.cardName;
@@ -35,7 +35,7 @@ angular.module('prints').controller('PrintsController', ['$scope', '$stateParams
             // Create new Print object
 			var print = new Prints ({
 				card: card._id,
-                expansion: expansion._id,
+                expansion: $scope.expansion._id,
                 collectorNumber: this.collectorNumber,
                 flavorText: this.flavorText,
                 illustrator: this.illustrator
