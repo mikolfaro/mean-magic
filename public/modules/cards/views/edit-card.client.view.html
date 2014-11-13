@@ -29,19 +29,19 @@
                         <input type="text" data-ng-model="card.type" ng-change="checkCardType()" id="type" class="form-control" placeholder="Type" required>
                     </div>
                 </div>
-                <div class="form-group" ng-show="card.power || (card._type === 'creature')">
+                <div class="form-group" ng-show="card.power || (card.__t === 'Creature')">
                     <label class="control-label" for="power">Power</label>
                     <div class="controls">
                         <input type="text" data-ng-model="card.power" id="power" class="form-control" placeholder="Power" required>
                     </div>
                 </div>
-                <div class="form-group" ng-show="card.toughness || (card._type === 'creature')">
+                <div class="form-group" ng-show="card.toughness || (card.__t === 'Creature')">
                     <label class="control-label" for="toughness">Toughness</label>
                     <div class="controls">
                         <input type="text" data-ng-model="card.toughness" id="toughness" class="form-control" placeholder="Toughness" required>
                     </div>
                 </div>
-                <div class="form-group" ng-show="card.loyalty || card._type === 'planeswalker'">
+                <div class="form-group" ng-show="card.loyalty || card.__t === 'Planeswalker'">
                     <label class="control-label" for="loyalty">Loyalty</label>
                     <div class="controls">
                         <input type="text" data-ng-model="card.loyalty" id="loyalty" class="form-control" placeholder="Loyalty" required>
