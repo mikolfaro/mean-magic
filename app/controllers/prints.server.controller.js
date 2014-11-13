@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors'),
+    users = require('./users'),
 	Print = mongoose.model('Print'),
     Expansion = mongoose.model('Expansion'),
     Card = mongoose.model('Card'),
@@ -186,8 +187,10 @@ exports.printByID = function(req, res, next, id) { Print.findById(id).populate('
  * Print authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.print.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
+	if (!req.print.user || (req.print.user.id !== req.user.id)) {
+        // Maybe he's an admin
+        users.hasAuthorization(['admin'])(req, res, next);
+        // return res.status(403).send('User is not authorized');
 	}
 	next();
 };

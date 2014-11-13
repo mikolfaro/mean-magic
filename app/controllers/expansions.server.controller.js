@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors'),
+	users = require('./users'),
 	Expansion = mongoose.model('Expansion'),
 	_ = require('lodash'),
     https = require('https');
@@ -150,8 +151,10 @@ exports.expansionByID = function(req, res, next, id) { Expansion.findById(id).po
  * Expansion authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.expansion.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
+	if (!req.expansion.user || (req.expansion.user.id !== req.user.id)) {
+		// Maybe he's an admin
+		users.hasAuthorization(['admin'])(req, res, next);
+		// return res.status(403).send('User is not authorized');
 	}
 	next();
 };

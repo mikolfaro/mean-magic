@@ -2,7 +2,7 @@
 	<div class="page-header">
 		<h1 data-ng-bind="expansion.name"></h1>
 	</div>
-	<div class="pull-right" data-ng-show="authentication.user._id == expansion.user._id">
+	<div class="pull-right" data-ng-show="authentication.user._id == expansion.user._id || authentication.isAdmin()">
 		<a class="btn btn-primary" href="/#!/expansions/{{expansion._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
