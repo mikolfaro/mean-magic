@@ -2,7 +2,7 @@
 	<div class="page-header">
         <h1 ng-show="print.expansion">{{ print.expansion.name }} - {{ print.collectorNumber }}</h1>
 	</div>
-	<div class="pull-right" data-ng-show="authentication.user._id == card.user._id">
+	<div class="pull-right" data-ng-show="authentication.user._id == card.user._id || authentication.isAdmin()">
 		<a class="btn btn-primary" href="/#!/cards/{{card._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>

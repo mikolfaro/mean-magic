@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
     errorHandler = require('./errors'),
+    users = require('./users'),
     Card = mongoose.model('Card'),
     Creature = mongoose.model('Creature'),
     Planeswalker = mongoose.model('Planeswalker'),
@@ -185,7 +186,10 @@ exports.cardByID = function(req, res, next, id) {
  */
 exports.hasAuthorization = function(req, res, next) {
 	if (req.card.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
-	}
-	next();
+        // Maybe he's an admin
+        users.hasAuthorization('admin')(req, res, next);
+		// return res.status(403).send('User is not authorized');
+	} else {
+        next();
+    }
 };
