@@ -155,6 +155,7 @@ exports.hasAuthorization = function(req, res, next) {
 		// Maybe he's an admin
 		users.hasAuthorization(['admin'])(req, res, next);
 		// return res.status(403).send('User is not authorized');
+	} else {
+		next();
 	}
-	next();
 };
