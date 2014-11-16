@@ -5,7 +5,8 @@
                 <h1>Cards</h1>
             </div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
-                <input type="text" class="form-control" ng-model="query" placeholder="Filter by name">
+                <input type="text" class="form-control" placeholder="Filter by name"
+                       ng-model="query" ng-change="find()">
             </div>
         </div>
     </div>

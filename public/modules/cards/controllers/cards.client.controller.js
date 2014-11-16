@@ -74,7 +74,7 @@ angular.module('cards').controller('CardsController', ['$scope', '$stateParams',
 
         // Find a list of Cards
 		$scope.find = function() {
-			$scope.cards = Cards.query({ page: $scope.page, count: $scope.count }, function (cards, headers) {
+			$scope.cards = Cards.query({ page: $scope.page, count: $scope.count, q: $scope.query }, function (cards, headers) {
                 $scope.totalItems = headers('X-Item-Count');
             });
 		};
