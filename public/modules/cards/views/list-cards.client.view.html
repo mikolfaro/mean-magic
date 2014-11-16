@@ -1,6 +1,13 @@
 <section data-ng-controller="CardsController" data-ng-init="find()">
     <div class="page-header">
-        <h1>Cards</h1>
+        <div class="row">
+            <div class="col-xs-6 col-sm-8 col-md-9 col-lg-9">
+                <h1>Cards</h1>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
+                <input type="text" class="form-control" ng-model="query" placeholder="Filter by name">
+            </div>
+        </div>
     </div>
     <div class="list-group">
         <a data-ng-repeat="card in cards" data-ng-href="#!/cards/{{card._id}}" class="list-group-item">
