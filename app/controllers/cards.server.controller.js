@@ -86,8 +86,13 @@ exports.delete = function(req, res) {
  * List of Cards
  */
 exports.list = function(req, res) {
+    var q = {};
+    if (req.query.q) {
+        q.name = new RegExp(req.query.q, 'i');
+    }
+
     Card
-        .paginate({}, req.query.page, req.query.count, function (err, pageCount, cards, itemCount) {
+        .paginate(q, req.query.page, req.query.count, function (err, pageCount, cards, itemCount) {
 			if (err) {
 				return res.status(400).send({
 					message: errorHandler.getErrorMessage(err)

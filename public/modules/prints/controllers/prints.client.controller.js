@@ -7,9 +7,16 @@ angular.module('prints').controller('PrintsController', ['$scope', '$stateParams
 	function($scope, $stateParams, $location, Authentication, Prints, Cards, Expansions) {
 		$scope.authentication = Authentication;
 
+		//Cards.query({ page: 1, count: 10 }, function (cards) {
+		//	$scope.cards = cards;
+		//});
+
 		$scope.searchCards = function (cardQuery) {
 			console.log(cardQuery);
-			return Cards.query({ page: 1, count: 10 });
+			return Cards.query({ page: 1, count: 10, q: cardQuery }).$promise.then(function (cards) {
+				console.log(cards);
+				return cards;
+			});
 		};
 
         Expansions.query(function (expansions) {
@@ -39,8 +46,9 @@ angular.module('prints').controller('PrintsController', ['$scope', '$stateParams
 		};
 
 		// Remove existing Print
-		$scope.remove = function( print ) {
-			if ( print ) { print.$remove();
+		$scope.remove = function(print) {
+			if (print) {
+				print.$remove();
 
 				for (var i in $scope.prints ) {
 					if ($scope.prints [i] === print ) {
