@@ -8,7 +8,9 @@ var mongoose = require('mongoose'),
 	users = require('./users'),
 	Expansion = mongoose.model('Expansion'),
 	_ = require('lodash'),
-    https = require('https');
+	http = require('http'),
+	JSONStream = require('JSONStream'),
+	Promise = require("promise").Promise;
 
 /**
  * Create a Expansion
@@ -90,49 +92,51 @@ exports.list = function(req, res) { Expansion.find().sort('-created').populate('
  */
 var importExpansions = function (expansions) {
     var writtenExpansions = [];
-    expansions.forEach(function (toBeImportedExpansion) {
-        Expansion.findOne({ code: toBeImportedExpansion.Code }, function (err, expansion) {
-            if (!expansion) {
-                expansion = new Expansion({
-                    name: toBeImportedExpansion.Name,
-                    code: toBeImportedExpansion.Code
-                });
-                expansion.save(function (err) {
-                    if (err) {
-                        console.log('Failed import: ' + expansion.name);
-                    } else {
-                        writtenExpansions.push(expansion.name);
-                    }
-                });
-            }
+    _.forEach(expansions, function (importableExpansion) {
+		var promise = new Promise();
+		writtenExpansions.push(promise);
+        Expansion.findOne({ code: importableExpansion.code }, function (err, expansion) {
+			if (!expansion) {
+				expansion = new Expansion({
+					name: importableExpansion.name,
+					code: importableExpansion.code
+				});
+				expansion.save(function (err) {
+					if (err) {
+						console.log('Failed import: ' + expansion.name);
+						promise.reject(err);
+					} else {
+						promise.resolve(expansion.code);
+					}
+				});
+			}
+			promise.resolve();
         });
     });
 
-    return writtenExpansions;
+    return Promise.all(writtenExpansions);
 };
 
 exports.importAll = function(req, res) {
-    var resolve = function (url, callback) {
-        https.get(url, function(response) {
-            if (response.statusCode === 301 || response.statusCode === 302) {
-                resolve(response.headers.location, callback);
-            } else {
-                callback(response);
-            }
-        });
-    };
-
-    var url = 'https://sites.google.com/site/mtgfamiliar/manifests/patches.json';
+    var url = 'http://mtgjson.com/json/AllSets.json';
     console.log('Importing from: ' + url);
-    resolve(url, function(response) {
-        var content = '';
-        response.on('data', function(chunk) {
-            content += chunk;
-        });
-        response.on('end', function () {
-            var writtenExpansions = importExpansions(JSON.parse(content).Patches);
-            res.jsonp({ expansions: writtenExpansions });
-        });
+	http.get(url, function(response) {
+		if (response.statusCode !== 200) {
+			console.log(response.statusCode);
+			res.end();
+		} else {
+			response
+				//.pipe(unzip.Parse())
+				.pipe(JSONStream.parse())
+				.on('root', function (root) {
+					importExpansions(root)
+						.done(function (expansions) {
+							console.log(expansions);
+							res.write(JSON.stringify(expansions));
+							res.end();
+					});
+				});
+		}
     });
 };
 
