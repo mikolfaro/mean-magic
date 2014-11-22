@@ -33,7 +33,8 @@ describe('Expansion Controller Unit Tests:', function() {
 
             .end(function (err, res) {
                 should.not.exist(err);
-                res.body.should.equal([ 'AXP', 'OXP' ]);
+                res.body.should.have.lengthOf(2);
+                res.body.should.eql([ 'AXP', 'OXP' ]);
 
                 Expansion.findOne({ code: 'AXP' }, function (err, expansion) {
                     should.not.exist(err);

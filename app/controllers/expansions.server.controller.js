@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
 	_ = require('lodash'),
 	http = require('http'),
 	JSONStream = require('JSONStream'),
-	Promise = require("promise").Promise;
+	Promise = require('promise');
 
 /**
  * Create a Expansion
@@ -93,25 +93,26 @@ exports.list = function(req, res) { Expansion.find().sort('-created').populate('
 var importExpansions = function (expansions) {
     var writtenExpansions = [];
     _.forEach(expansions, function (importableExpansion) {
-		var promise = new Promise();
-		writtenExpansions.push(promise);
-        Expansion.findOne({ code: importableExpansion.code }, function (err, expansion) {
-			if (!expansion) {
-				expansion = new Expansion({
-					name: importableExpansion.name,
-					code: importableExpansion.code
-				});
-				expansion.save(function (err) {
-					if (err) {
-						console.log('Failed import: ' + expansion.name);
-						promise.reject(err);
-					} else {
-						promise.resolve(expansion.code);
-					}
-				});
-			}
-			promise.resolve();
-        });
+		writtenExpansions.push(new Promise(function (resolve, reject) {
+			Expansion.findOne({ code: importableExpansion.code }, function (err, expansion) {
+				if (!expansion) {
+					expansion = new Expansion({
+						name: importableExpansion.name,
+						code: importableExpansion.code
+					});
+					expansion.save(function (err) {
+						if (err) {
+							console.log('Failed import: ' + expansion.name);
+							reject(err);
+						} else {
+							resolve(expansion.code);
+						}
+					});
+				} else {
+					resolve();
+				}
+			});
+		}));
     });
 
     return Promise.all(writtenExpansions);
@@ -131,7 +132,7 @@ exports.importAll = function(req, res) {
 				.on('root', function (root) {
 					importExpansions(root)
 						.done(function (expansions) {
-							console.log(expansions);
+							res.setHeader('Content-Type', 'application/json');
 							res.write(JSON.stringify(expansions));
 							res.end();
 					});
