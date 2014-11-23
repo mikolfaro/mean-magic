@@ -6,11 +6,15 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors'),
 	users = require('./users'),
-	Expansion = mongoose.model('Expansion'),
 	_ = require('lodash'),
 	http = require('http'),
 	JSONStream = require('JSONStream'),
-	Promise = require('promise');
+	Promise = require('promise'),
+	Expansion = mongoose.model('Expansion'),
+	Card = mongoose.model('Card'),
+	Creature = mongoose.model('Creature'),
+	Planeswalker = mongoose.model('Planeswalker'),
+	Print = mongoose.model('Print');
 
 /**
  * Create a Expansion
@@ -90,37 +94,68 @@ exports.list = function(req, res) { Expansion.find().sort('-created').populate('
 /**
  * Import Expansions
  */
-var importExpansions = function (expansions) {
-    var writtenExpansions = [];
-    _.forEach(expansions, function (importableExpansion) {
-		writtenExpansions.push(new Promise(function (resolve, reject) {
-			Expansion.findOne({ code: importableExpansion.code }, function (err, expansion) {
-				if (!expansion) {
-					expansion = new Expansion({
-						name: importableExpansion.name,
-						code: importableExpansion.code
-					});
-					expansion.save(function (err) {
-						if (err) {
-							console.log('Failed import: ' + expansion.name);
-							reject(err);
-						} else {
-							resolve(expansion.code);
-						}
-					});
-				} else {
-					resolve();
-				}
-			});
+var importExpansions = function (importableExpansions) {
+	var promises = [];
+	var exp;
+	_.forEach(importableExpansions, function (importableExpansion) {
+		promises.push(new Promise(function (resolve, reject) {
+			Expansion.findOrCreate({ code: importableExpansion.code },
+				{
+					name: importableExpansion.name,
+					code: importableExpansion.code
+				}, function (err, expansion, created) {
+					if (err) {
+						console.log('Expansion ' + expansion + ' cannot be imported');
+						reject(err);
+					} else if (created) {
+						resolve(expansion.code);
+					} else {
+						resolve();
+					}
+				});
 		}));
-    });
+		_.forEach(importableExpansion.cards, function (card) {
+			promises.push(new Promise (function (resolve, reject) {
+				var cardStub = {
+					name: card.name,
+					manaCost: card.manaCost,
+					convertedManaCost: card.cmc || 0,
+					type: card.type,
+					rules: card.text
+				};
+				if (card.type.indexOf('Planeswalker') !== -1) {
+					cardStub.loyalty = card.loyalty;
+					card = new Planeswalker(cardStub);
+				} else if (card.type.indexOf('Creature') !== -1) {
+					cardStub.power = card.power;
+					cardStub.toughness = card.toughness;
+					card = new Creature(cardStub);
+				} else {
+					card = new Card(cardStub);
+				}
+				card.save(function (err) {
+					if (err) {
+						if (err.code === 11000) {
+							resolve();
+						} else {
+							console.log('Card ' + card + ' cannot be imported');
+							reject(err);
+						}
+					} else {
+						resolve();
+					}
+				});
+			}));
+		});
+	});
 
-    return Promise.all(writtenExpansions);
+	return Promise.all(promises).then(function (importedExpansions) {
+		return _.compact(importedExpansions);
+	});
 };
 
 exports.importAll = function(req, res) {
     var url = 'http://mtgjson.com/json/AllSets.json';
-    console.log('Importing from: ' + url);
 	http.get(url, function(response) {
 		if (response.statusCode !== 200) {
 			console.log(response.statusCode);

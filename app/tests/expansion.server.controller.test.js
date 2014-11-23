@@ -10,7 +10,9 @@ var should = require('should'),
     mongoose = require('mongoose'),
     app = require('../../server'),
     User = mongoose.model('User'),
-    Expansion = mongoose.model('Expansion');
+    Expansion = mongoose.model('Expansion'),
+    Card = mongoose.model('Card'),
+    Print = mongoose.model('Print');
 
 /**
 * Unit tests
@@ -26,11 +28,10 @@ describe('Expansion Controller Unit Tests:', function() {
         done();
     });
 
-    it ('should be able to import expansions from MTGsalvation patches', function (done) {
+    it ('should be able to import expansions from MTGjson', function (done) {
         request(app)
             .post('/expansions/import')
             .expect(200)
-
             .end(function (err, res) {
                 should.not.exist(err);
                 res.body.should.have.lengthOf(2);
@@ -46,14 +47,62 @@ describe('Expansion Controller Unit Tests:', function() {
                         should.not.exist(err);
                         should.exist(expansion2);
                         expansion2.should.have.property('code', 'OXP');
+
                         done();
                     });
                 });
             });
     });
 
+    it ('should be able to import cards from MTGjson', function (done) {
+        request(app)
+            .post('/expansions/import')
+            .expect(200)
+            .end(function (err, res) {
+                should.not.exist(err);
+                res.body.should.have.lengthOf(2);
+                res.body.should.eql(['AXP', 'OXP']);
+
+                Card.findOne({name: 'Air Elemental'}, function (err, card) {
+                    should.not.exist(err);
+                    card.should.have.property('name', 'Air Elemental');
+                    card.should.have.property('manaCost', '{3}{U}{U}');
+                    card.should.have.property('convertedManaCost', '5');
+                    card.should.have.property('type', 'Creature — Elemental');
+                    card.should.have.property('rules', 'Flying');
+                    card.should.have.property('power', '4');
+                    card.should.have.property('toughness', '4');
+
+                    done();
+                });
+            });
+    });
+
+    it ('should set cmc of land cards to 0 from MTGjson', function (done) {
+        request(app)
+            .post('/expansions/import')
+            .expect(200)
+            .end(function (err, res) {
+                should.not.exist(err);
+                res.body.should.have.lengthOf(2);
+                res.body.should.eql(['AXP', 'OXP']);
+
+                Card.findOne({name: 'Zoetic Cavern'}, function (err, card) {
+                    should.not.exist(err);
+                    card.should.have.property('name', 'Zoetic Cavern');
+                    should.not.exist(card.manaCost);
+                    card.should.have.property('convertedManaCost', '0');
+                    card.should.have.property('type', 'Land');
+
+                    done();
+                });
+            });
+    });
+
     afterEach(function (done) {
+        Print.remove().exec();
         Expansion.remove().exec();
+        Card.remove().exec();
         User.remove().exec();
 
         done();
