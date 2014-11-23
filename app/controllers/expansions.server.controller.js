@@ -116,33 +116,46 @@ var importExpansions = function (importableExpansions) {
 		}));
 		_.forEach(importableExpansion.cards, function (card) {
 			promises.push(new Promise (function (resolve, reject) {
-				var cardStub = {
-					name: card.name,
-					manaCost: card.manaCost,
-					convertedManaCost: card.cmc || 0,
-					type: card.type,
-					rules: card.text
-				};
-				if (card.type.indexOf('Planeswalker') !== -1) {
-					cardStub.loyalty = card.loyalty;
-					card = new Planeswalker(cardStub);
-				} else if (card.type.indexOf('Creature') !== -1) {
-					cardStub.power = card.power;
-					cardStub.toughness = card.toughness;
-					card = new Creature(cardStub);
-				} else {
-					card = new Card(cardStub);
-				}
-				card.save(function (err) {
+				Card.findOne({ name: card.name }, function (err, foundCard) {
 					if (err) {
-						if (err.code === 11000) {
+						reject(err);
+					} else if (foundCard) {
+						resolve();
+					} else {
+						if (card.name.indexOf('token') !== -1) {
+							// Skip tokens
 							resolve();
 						} else {
-							console.log('Card ' + card + ' cannot be imported');
-							reject(err);
+							var cardStub = {
+								name: card.name,
+								manaCost: card.manaCost,
+								convertedManaCost: card.cmc || 0,
+								type: card.type,
+								rules: card.text
+							};
+							if (card.type.indexOf('Planeswalker') !== -1) {
+								cardStub.loyalty = card.loyalty;
+								card = new Planeswalker(cardStub);
+							} else if (card.type.indexOf('Creature') !== -1 && card.type.indexOf('Enchant Creature')) {
+								cardStub.power = card.power;
+								cardStub.toughness = card.toughness;
+								card = new Creature(cardStub);
+							} else {
+								card = new Card(cardStub);
+							}
+							card.save(function (err) {
+								if (err) {
+									if (err.code === 11000) {
+										resolve();
+									} else {
+										console.log('Card ' + card + ' cannot be imported');
+										reject(err);
+									}
+								} else {
+									resolve();
+								}
+							});
 						}
-					} else {
-						resolve();
 					}
 				});
 			}));
