@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+	supergoose = require('supergoose'),
 	Schema = mongoose.Schema;
 
 /**
@@ -33,4 +34,5 @@ var ExpansionSchema = new Schema({
 	}
 });
 
+ExpansionSchema.plugin(supergoose, {});
 mongoose.model('Expansion', ExpansionSchema);

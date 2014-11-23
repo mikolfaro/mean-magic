@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
     paginate = require('mongoose-paginate'),
+    supergoose = require('supergoose'),
 	Schema = mongoose.Schema;
 
 /**
@@ -60,4 +61,5 @@ PrintSchema.pre('save', true, function (next, done) {
 });
 
 PrintSchema.plugin(paginate, {});
+PrintSchema.plugin(supergoose, {});
 mongoose.model('Print', PrintSchema);
