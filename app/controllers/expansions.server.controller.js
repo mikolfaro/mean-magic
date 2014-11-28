@@ -184,6 +184,7 @@ var importExpansions = function (importableExpansions) {
 											card: card,
 											expansion: expansion,
 											collectorNumber: targetCard.number || index + 1,
+											rarity:  targetCard.rarity,
 											flavorText: targetCard.flavor,
 											illustrator: targetCard.artist
 										}, function (err, print) {

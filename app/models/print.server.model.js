@@ -26,6 +26,11 @@ var PrintSchema = new Schema({
         type: String,
         required: 'Collector number cannot be blank'
     },
+    rarity: {
+        type: String,
+        required: 'Rarity cannot be blank',
+        enum: ['Common', 'Uncommon', 'Rare', 'Mythic Rare', 'Timeshifted', 'Basic Land', 'Special']
+    },
     flavorText: {
         type: String
     },
