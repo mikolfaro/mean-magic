@@ -99,6 +99,35 @@ describe('Expansion Controller Unit Tests:', function() {
             });
     });
 
+    it ('should be able to import prints from MTGjson', function (done) {
+        request(app)
+            .post('/expansions/import')
+            .expect(200)
+            .end(function (err, res) {
+                should.not.exist(err);
+                res.body.should.have.lengthOf(2);
+
+                Print.findOne({ collectorNumber: '317' }, function (err, print) {
+                    should.not.exist(err);
+                    print.should.have.property('collectorNumber', '317');
+                    print.should.have.property('illustrator', 'Lars Grant-West');
+
+                    // Check card reference
+                    Card.findOne({ _id: print.card}, function (err, card) {
+                        should.not.exist(err);
+                        card.should.have.property('name', 'Zoetic Cavern');
+
+                        Expansion.findOne({ _id: print.expansion }, function (err, expansion) {
+                            should.not.exist(err);
+                            expansion.should.have.property('code', 'OXP');
+
+                            done();
+                        });
+                    });
+                });
+            });
+    });
+
     afterEach(function (done) {
         Print.remove().exec();
         Expansion.remove().exec();

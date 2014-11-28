@@ -163,8 +163,50 @@ var importExpansions = function (importableExpansions) {
 	});
 
 	return Promise.all(promises).then(function (importedExpansions) {
-		return _.compact(importedExpansions);
+		var printPromises = [];
+		_.forEach(importableExpansions, function (targetExpansion) {
+			_.forEach(targetExpansion.cards, function (targetCard) {
+				printPromises.push(new Promise(function (resolve, reject) {
+					Expansion.findOne({ code: targetExpansion.code }, function (err, expansion) {
+						if (err) {
+							reject(err);
+						} else if (!expansion) {
+							reject('Expansion ' + targetExpansion.code + ' not found');
+						} else {
+							Card.findOne({ name: targetCard.name }, function (err, card) {
+								if (err) {
+									reject(card);
+								} else if (!card) {
+									reject('Card ' + targetCard.name + ' not found');
+								} else {
+									Print.create({
+										card: card,
+										expansion: expansion,
+										collectorNumber: targetCard.number,
+										flavorText: targetCard.flavor,
+										illustrator: targetCard.artist
+									}, function (err, print) {
+										if (err) {
+											console.log('Failed import of print ' + JSON.stringify(targetCard));
+											reject(err);
+										} else {
+											resolve();
+										}
+									});
+								}
+							});
+						}
+
+					});
+				}));
+			});
+		});
+
+		return Promise.all(printPromises).then(function () {
+			return _.compact(importedExpansions);
+		});
 	});
+
 };
 
 exports.importAll = function(req, res) {
