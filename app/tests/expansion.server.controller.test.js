@@ -107,9 +107,9 @@ describe('Expansion Controller Unit Tests:', function() {
                 should.not.exist(err);
                 res.body.should.have.lengthOf(2);
 
-                Print.findOne({ collectorNumber: '317' }, function (err, print) {
+                Print.findOne({ collectorNumber: '2' }, function (err, print) {
                     should.not.exist(err);
-                    print.should.have.property('collectorNumber', '317');
+                    print.should.have.property('collectorNumber', '2');
                     print.should.have.property('illustrator', 'Lars Grant-West');
 
                     // Check card reference

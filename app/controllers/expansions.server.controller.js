@@ -165,40 +165,41 @@ var importExpansions = function (importableExpansions) {
 	return Promise.all(promises).then(function (importedExpansions) {
 		var printPromises = [];
 		_.forEach(importableExpansions, function (targetExpansion) {
-			_.forEach(targetExpansion.cards, function (targetCard) {
-				printPromises.push(new Promise(function (resolve, reject) {
-					Expansion.findOne({ code: targetExpansion.code }, function (err, expansion) {
-						if (err) {
-							reject(err);
-						} else if (!expansion) {
-							reject('Expansion ' + targetExpansion.code + ' not found');
-						} else {
-							Card.findOne({ name: targetCard.name }, function (err, card) {
-								if (err) {
-									reject(card);
-								} else if (!card) {
-									reject('Card ' + targetCard.name + ' not found');
-								} else {
-									Print.create({
-										card: card,
-										expansion: expansion,
-										collectorNumber: targetCard.number,
-										flavorText: targetCard.flavor,
-										illustrator: targetCard.artist
-									}, function (err, print) {
-										if (err) {
-											console.log('Failed import of print ' + JSON.stringify(targetCard));
-											reject(err);
-										} else {
-											resolve();
-										}
-									});
-								}
-							});
-						}
-
-					});
-				}));
+			_.forEach(targetExpansion.cards, function (targetCard, index) {
+				if (targetCard.name.indexOf('token') === -1) {
+					printPromises.push(new Promise(function (resolve, reject) {
+						Expansion.findOne({code: targetExpansion.code}, function (err, expansion) {
+							if (err) {
+								reject(err);
+							} else if (!expansion) {
+								reject('Expansion ' + targetExpansion.code + ' not found');
+							} else {
+								Card.findOne({name: targetCard.name}, function (err, card) {
+									if (err) {
+										reject(card);
+									} else if (!card) {
+										reject('Card ' + targetCard.name + ' not found');
+									} else {
+										Print.create({
+											card: card,
+											expansion: expansion,
+											collectorNumber: targetCard.number || index + 1,
+											flavorText: targetCard.flavor,
+											illustrator: targetCard.artist
+										}, function (err, print) {
+											if (err) {
+												console.log('Failed import of print ' + JSON.stringify(targetCard));
+												reject(err);
+											} else {
+												resolve();
+											}
+										});
+									}
+								});
+							}
+						});
+					}));
+				}
 			});
 		});
 
