@@ -27,7 +27,7 @@
 					<h3>{{ card.type }}</h3>
                 </div>
                 <div class="col-sm-4">
-                    <h3 ng-show="print" ng-bind-html="print.expansion.code|iconifyExpansion" class="pull-right"></h3>
+                    <h3 ng-show="print" ng-bind-html="print.expansion.code|iconifyExpansion : print.rarity" class="pull-right"></h3>
                 </div>
             </div>
 
