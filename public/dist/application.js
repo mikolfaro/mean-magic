@@ -229,32 +229,33 @@ angular.module('cards').filter('iconifyMana', [
           '{U}': 'mana_U.png',
           '{W}': 'mana_W.png',
           '{G}': 'mana_G.png',
-          '{BR}': 'mana_BR.png',
-          '{BG}': 'mana_BG.png',
-          '{WB}': 'mana_WB.png',
-          '{BU}': 'mana_BU.png',
-          '{RG}': 'mana_RG.png',
-          '{RW}': 'mana_RW.png',
-          '{UR}': 'mana_UR.png',
-          '{GW}': 'mana_GW.png',
-          '{GU}': 'mana_GU.png',
-          '{WU}': 'mana_WU.png',
+          '{B/R}': 'mana_BR.png',
+          '{B/G}': 'mana_BG.png',
+          '{W/B}': 'mana_WB.png',
+          '{B/U}': 'mana_BU.png',
+          '{R/G}': 'mana_RG.png',
+          '{R/W}': 'mana_RW.png',
+          '{U/R}': 'mana_UR.png',
+          '{G/W}': 'mana_GW.png',
+          '{G/U}': 'mana_GU.png',
+          '{W/U}': 'mana_WU.png',
           '{2/B}': 'mana_2B.png',
           '{2/R}': 'mana_2R.png',
           '{2/U}': 'mana_2U.png',
           '{2/W}': 'mana_2W.png',
           '{2/G}': 'mana_2G.png',
-          '{BP}': 'mana_BP.png',
-          '{RP}': 'mana_RP.png',
-          '{UP}': 'mana_UP.png',
-          '{WP}': 'mana_WP.png',
-          '{GP}': 'mana_GP.png',
+          '{B/P}': 'mana_BP.png',
+          '{R/P}': 'mana_RP.png',
+          '{U/P}': 'mana_UP.png',
+          '{W/P}': 'mana_WP.png',
+          '{G/P}': 'mana_GP.png',
           '{X}': 'mana_X.png',
           '{Y}': 'mana_Y.png',
           '{Z}': 'mana_Z.png',
-          '{T}': 'mana_T.png'
+          '{T}': 'mana_T.png',
+          '{Q}': 'mana_Q.png'
         };
-      return text.replace(/(\{[\{\dWPXTURBG\}]*\})/g, function (matched) {
+      return text.replace(/(\{[\{\dWPXTQURBG/\}]*\})/g, function (matched) {
         return ManaCostManipulator.split(matched).map(function (value) {
           return '<img class="mana" src="modules/cards/img/mana/' + manaMap[value] + '" alt="' + value + '" />';
         }).join('');
@@ -676,11 +677,25 @@ angular.module('prints').controller('PrintsController', [
 ]);'use strict';
 // Cards filters
 angular.module('prints').filter('iconifyExpansion', [function () {
-    return function (expansionCode) {
+    return function (expansionCode, rarity) {
       if (!expansionCode || expansionCode.length === 0) {
         return '';
       }
-      return '<img class="expansion-symbol" src="modules/expansions/img/symbol/' + expansionCode + '_symbol.png" alt="' + expansionCode + '" />';
+      rarity = rarity || 'Common';
+      var rarityCode = function (rarity) {
+        if (rarity.indexOf('Timeshifted') > -1) {
+          return 't';
+        } else if (rarity.indexOf('Mythic') > -1) {
+          return 'm';
+        } else if (rarity.indexOf('Rare') > -1) {
+          return 'r';
+        } else if (rarity.indexOf('Uncommon') > -1) {
+          return 'u';
+        } else {
+          return 'c';
+        }
+      };
+      return '<img class="expansion-symbol" src="http://mtgimage.com/symbol/set/' + expansionCode + '/' + rarityCode(rarity) + '/256.png" />';
     };
   }]);'use strict';
 //Prints service used to communicate Prints REST endpoints
@@ -897,6 +912,13 @@ angular.module('users').factory('Authentication', [
       user: window.user,
       isAdmin: function () {
         return _.intersection(window.user.roles, ['admin']).length > 0;
+      },
+      is: function (userId) {
+        if (!userId || !window.user) {
+          return false;
+        } else {
+          return userId === window.user._id;
+        }
       }
     };
     return _this._data;
