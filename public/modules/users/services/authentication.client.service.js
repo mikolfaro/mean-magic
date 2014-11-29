@@ -10,6 +10,13 @@ angular.module('users').factory('Authentication', [ 'lodash',
 			user: window.user,
 			isAdmin: function () {
 				return _.intersection(window.user.roles, ['admin']).length > 0;
+			},
+			is: function (userId) {
+				if (!userId || !window.user) {
+					return false;
+				} else {
+					return userId === window.user._id;
+				}
 			}
 		};
 
