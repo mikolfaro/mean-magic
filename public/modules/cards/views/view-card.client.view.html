@@ -2,7 +2,7 @@
 	<div class="page-header">
         <h1 ng-show="print.expansion">{{ print.expansion.name }} - {{ print.collectorNumber }}</h1>
 	</div>
-	<div class="pull-right" data-ng-show="authentication.user._id == card.user._id || authentication.isAdmin()">
+	<div class="pull-right" data-ng-show="authentication.is(card.user._id) || authentication.isAdmin()">
 		<a class="btn btn-primary" href="/#!/cards/{{card._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
@@ -27,7 +27,7 @@
 					<h3>{{ card.type }}</h3>
                 </div>
                 <div class="col-sm-4">
-                    <h3 ng-show="print" ng-bind-html="print.expansion.code|iconifyExpansion" class="pull-right"></h3>
+                    <h3 ng-show="print" ng-bind-html="print.expansion.code|iconifyExpansion : print.rarity" class="pull-right"></h3>
                 </div>
             </div>
 
@@ -59,6 +59,9 @@
         </div>
     </div>
     <div class="col-sm-6 transformable">
+        <img class="center-block card img-responsive" ng-src="http://mtgimage.com/set/{{ print.expansion.code }}/{{ card.name }}.jpg">
+        <!--
         <img class="center-block card" ng-src="http://www.magiccards.info/scans/en/{{ print.expansion.code|lowercase }}/{{ print.collectorNumber }}.jpg">
+        -->
     </div>
 </section>

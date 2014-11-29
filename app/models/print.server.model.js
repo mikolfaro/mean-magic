@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
     paginate = require('mongoose-paginate'),
+    supergoose = require('supergoose'),
 	Schema = mongoose.Schema;
 
 /**
@@ -19,11 +20,16 @@ var PrintSchema = new Schema({
     expansion: {
         type: Schema.ObjectId,
         ref: 'Expansion',
-        required: 'Card cannot be blank'
+        required: 'Expansion cannot be blank'
     },
     collectorNumber: {
         type: String,
-        required: 'Card cannot be blank'
+        required: 'Collector number cannot be blank'
+    },
+    rarity: {
+        type: String,
+        required: 'Rarity cannot be blank',
+        enum: ['Common', 'Uncommon', 'Rare', 'Mythic Rare', 'Timeshifted', 'Basic Land', 'Special']
     },
     flavorText: {
         type: String
@@ -60,4 +66,5 @@ PrintSchema.pre('save', true, function (next, done) {
 });
 
 PrintSchema.plugin(paginate, {});
+PrintSchema.plugin(supergoose, {});
 mongoose.model('Print', PrintSchema);

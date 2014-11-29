@@ -58,6 +58,7 @@ describe('Print Model Unit Tests:', function() {
                             expansion: expansion,
                             collectorNumber: 1,
                             user: user,
+                            rarity: 'Common',
                             illustrator: 'Dino Bovino'
                         });
 
@@ -65,6 +66,7 @@ describe('Print Model Unit Tests:', function() {
                             card: card,
                             expansion: expansion,
                             collectorNumber: 1,
+                            rarity: 'Uncommon',
                             user: user
                         });
 
@@ -111,6 +113,15 @@ describe('Print Model Unit Tests:', function() {
 
         it('should be able to show an error when try to save without collector number', function(done) {
             print1.collectorNumber = null;
+
+            return print1.save(function(err) {
+                should.exist(err);
+                done();
+            });
+        });
+
+        it('should be able to show an error when try to save without rarity', function(done) {
+            print1.rarity = null;
 
             return print1.save(function(err) {
                 should.exist(err);

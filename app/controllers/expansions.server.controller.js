@@ -6,9 +6,15 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors'),
 	users = require('./users'),
-	Expansion = mongoose.model('Expansion'),
 	_ = require('lodash'),
-    https = require('https');
+	http = require('http'),
+	JSONStream = require('JSONStream'),
+	Promise = require('promise'),
+	Expansion = mongoose.model('Expansion'),
+	Card = mongoose.model('Card'),
+	Creature = mongoose.model('Creature'),
+	Planeswalker = mongoose.model('Planeswalker'),
+	Print = mongoose.model('Print');
 
 /**
  * Create a Expansion
@@ -88,51 +94,142 @@ exports.list = function(req, res) { Expansion.find().sort('-created').populate('
 /**
  * Import Expansions
  */
-var importExpansions = function (expansions) {
-    var writtenExpansions = [];
-    expansions.forEach(function (toBeImportedExpansion) {
-        Expansion.findOne({ code: toBeImportedExpansion.Code }, function (err, expansion) {
-            if (!expansion) {
-                expansion = new Expansion({
-                    name: toBeImportedExpansion.Name,
-                    code: toBeImportedExpansion.Code
-                });
-                expansion.save(function (err) {
-                    if (err) {
-                        console.log('Failed import: ' + expansion.name);
-                    } else {
-                        writtenExpansions.push(expansion.name);
-                    }
-                });
-            }
-        });
-    });
+var importExpansions = function (importableExpansions) {
+	var promises = [];
+	var exp;
+	_.forEach(importableExpansions, function (importableExpansion) {
+		promises.push(new Promise(function (resolve, reject) {
+			Expansion.findOrCreate({ code: importableExpansion.code },
+				{
+					name: importableExpansion.name,
+					code: importableExpansion.code
+				}, function (err, expansion, created) {
+					if (err) {
+						console.log('Expansion ' + expansion + ' cannot be imported');
+						reject(err);
+					} else if (created) {
+						resolve(expansion.code);
+					} else {
+						resolve();
+					}
+				});
+		}));
+		_.forEach(importableExpansion.cards, function (card) {
+			promises.push(new Promise (function (resolve, reject) {
+				Card.findOne({ name: card.name }, function (err, foundCard) {
+					if (err) {
+						reject(err);
+					} else if (foundCard) {
+						resolve();
+					} else {
+						if (card.name.indexOf('token') !== -1) {
+							// Skip tokens
+							resolve();
+						} else {
+							var cardStub = {
+								name: card.name,
+								manaCost: card.manaCost,
+								convertedManaCost: card.cmc || 0,
+								type: card.type,
+								rules: card.text
+							};
+							if (card.type.indexOf('Planeswalker') !== -1) {
+								cardStub.loyalty = card.loyalty;
+								card = new Planeswalker(cardStub);
+							} else if (card.type.indexOf('Creature') !== -1 && card.type.indexOf('Enchant Creature')) {
+								cardStub.power = card.power;
+								cardStub.toughness = card.toughness;
+								card = new Creature(cardStub);
+							} else {
+								card = new Card(cardStub);
+							}
+							card.save(function (err) {
+								if (err) {
+									if (err.code === 11000) {
+										resolve();
+									} else {
+										console.log('Card ' + card + ' cannot be imported');
+										reject(err);
+									}
+								} else {
+									resolve();
+								}
+							});
+						}
+					}
+				});
+			}));
+		});
+	});
 
-    return writtenExpansions;
+	return Promise.all(promises).then(function (importedExpansions) {
+		var printPromises = [];
+		_.forEach(importableExpansions, function (targetExpansion) {
+			_.forEach(targetExpansion.cards, function (targetCard, index) {
+				if (targetCard.name.indexOf('token') === -1) {
+					printPromises.push(new Promise(function (resolve, reject) {
+						Expansion.findOne({code: targetExpansion.code}, function (err, expansion) {
+							if (err) {
+								reject(err);
+							} else if (!expansion) {
+								reject('Expansion ' + targetExpansion.code + ' not found');
+							} else {
+								Card.findOne({name: targetCard.name}, function (err, card) {
+									if (err) {
+										reject(card);
+									} else if (!card) {
+										reject('Card ' + targetCard.name + ' not found');
+									} else {
+										Print.create({
+											card: card,
+											expansion: expansion,
+											collectorNumber: targetCard.number || index + 1,
+											rarity:  targetCard.rarity,
+											flavorText: targetCard.flavor,
+											illustrator: targetCard.artist
+										}, function (err, print) {
+											if (err) {
+												console.log('Failed import of print ' + JSON.stringify(targetCard));
+												reject(err);
+											} else {
+												resolve();
+											}
+										});
+									}
+								});
+							}
+						});
+					}));
+				}
+			});
+		});
+
+		return Promise.all(printPromises).then(function () {
+			return _.compact(importedExpansions);
+		});
+	});
+
 };
 
 exports.importAll = function(req, res) {
-    var resolve = function (url, callback) {
-        https.get(url, function(response) {
-            if (response.statusCode === 301 || response.statusCode === 302) {
-                resolve(response.headers.location, callback);
-            } else {
-                callback(response);
-            }
-        });
-    };
-
-    var url = 'https://sites.google.com/site/mtgfamiliar/manifests/patches.json';
-    console.log('Importing from: ' + url);
-    resolve(url, function(response) {
-        var content = '';
-        response.on('data', function(chunk) {
-            content += chunk;
-        });
-        response.on('end', function () {
-            var writtenExpansions = importExpansions(JSON.parse(content).Patches);
-            res.jsonp({ expansions: writtenExpansions });
-        });
+    var url = 'http://mtgjson.com/json/AllSets.json';
+	http.get(url, function(response) {
+		if (response.statusCode !== 200) {
+			console.log(response.statusCode);
+			res.end();
+		} else {
+			response
+				//.pipe(unzip.Parse())
+				.pipe(JSONStream.parse())
+				.on('root', function (root) {
+					importExpansions(root)
+						.done(function (expansions) {
+							res.setHeader('Content-Type', 'application/json');
+							res.write(JSON.stringify(expansions));
+							res.end();
+					});
+				});
+		}
     });
 };
 

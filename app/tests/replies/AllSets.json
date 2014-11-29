@@ -1,0 +1,82 @@
+{
+  "AXP": {
+    "name": "An Expansion",
+    "code": "AXP",
+    "gathererCode": "1E",
+    "type": "core",
+    "cards": [
+      {
+        "layout": "normal",
+        "type": "Creature — Elemental",
+        "types": [
+          "Creature"
+        ],
+        "colors": [
+          "Blue"
+        ],
+        "multiverseid": 94,
+        "name": "Air Elemental",
+        "subtypes": [
+          "Elemental"
+        ],
+        "cmc": 5,
+        "rarity": "Uncommon",
+        "artist": "Richard Thomas",
+        "power": "4",
+        "toughness": "4",
+        "manaCost": "{3}{U}{U}",
+        "text": "Flying",
+        "flavor": "These spirits of the air are winsome and wild, and cannot be truly contained. Only marginally intelligent, they often substitute whimsy for strategy, delighting in mischief and mayhem.",
+        "imageName": "air elemental",
+        "number": "17"
+      }
+    ]
+  },
+  "OXP": {
+    "name": "An Other Expansion",
+    "code": "OXP",
+    "gathererCode": "2E",
+    "type": "core",
+    "cards": [
+      {
+        "layout": "normal",
+        "type": "Creature — Elemental",
+        "types": [
+          "Creature"
+        ],
+        "colors": [
+          "Blue"
+        ],
+        "multiverseid": 94,
+        "name": "Air Elemental",
+        "subtypes": [
+          "Elemental"
+        ],
+        "cmc": 5,
+        "rarity": "Uncommon",
+        "artist": "Richard Thomas",
+        "power": "4",
+        "toughness": "4",
+        "manaCost": "{3}{U}{U}",
+        "text": "Flying",
+        "flavor": "These spirits of the air are winsome and wild, and cannot be truly contained. Only marginally intelligent, they often substitute whimsy for strategy, delighting in mischief and mayhem.",
+        "imageName": "air elemental",
+        "number": "5"
+      },
+      {
+        "layout": "normal",
+        "type": "Land",
+        "types": [
+          "Land"
+        ],
+        "multiverseid": 389758,
+        "name": "Zoetic Cavern",
+        "rarity": "Uncommon",
+        "artist": "Lars Grant-West",
+        "text": "{T}: Add {1} to your mana pool.\nMorph {2} (You may cast this card face down as a 2/2 creature for {3}. Turn it face up any time for its morph cost.)",
+        "flavor": "Nothing lives within it, yet there is life.",
+        "imageName": "zoetic cavern"
+      }
+    ]
+  }
+}
