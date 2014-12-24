@@ -9,7 +9,7 @@ MEAN.JS is a full-stack JavaScript open-source solution, which provides a solid 
 
 ## Take a tour
 
-This app is hosted at [Heroku](https://www.heroku.com/).
+This app is hosted at [Heroku](https://www.heroku.com/) at [mean-magic.heroku.com](http://mean-magic.herokuapp.com/).
 
 The data used by the application are provided by [MTG JSON](http://mtgjson.com/) and [MTG Image](http://mtgimage.com/).
 
