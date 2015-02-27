@@ -3,6 +3,8 @@
 // Cards controller
 angular.module('cards').controller('CardsController', ['$scope', '$stateParams', '$location', '$state', 'Authentication', 'Cards', 'Prints',
 	function($scope, $stateParams, $location, $state, Authentication, Cards, Prints ) {
+        console.log("Creating card controller");
+
 		$scope.authentication = Authentication;
 
 		// Create new Card
@@ -74,7 +76,9 @@ angular.module('cards').controller('CardsController', ['$scope', '$stateParams',
 
         // Find a list of Cards
 		$scope.find = function() {
+            console.log(JSON.stringify({ page: $scope.page, count: $scope.count, q: $scope.query }));
 			$scope.cards = Cards.query({ page: $scope.page, count: $scope.count, q: $scope.query }, function (cards, headers) {
+                console.log(JSON.stringify(cards));
                 $scope.totalItems = headers('X-Item-Count');
             });
 		};
@@ -117,5 +121,7 @@ angular.module('cards').controller('CardsController', ['$scope', '$stateParams',
 				$state.go('viewCard', { 'cardId':$scope.card.transformsInto._id });
 			}
 		};
+
+        console.log("Created card controller");
 	}
 ]);
