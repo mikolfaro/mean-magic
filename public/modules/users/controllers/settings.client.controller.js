@@ -15,7 +15,7 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 
 			return false;
 		};
-
+		
 		// Check if provider is already in use with current user
 		$scope.isConnectedSocialAccount = function(provider) {
 			return $scope.user.provider === provider || ($scope.user.additionalProvidersData && $scope.user.additionalProvidersData[provider]);
@@ -41,15 +41,15 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 		// Update a user profile
 		$scope.updateUserProfile = function(isValid) {
 			if (isValid){
-				$scope.success = $scope.error = null;
-				var user = new Users($scope.user);
-	
-				user.$update(function(response) {
-					$scope.success = true;
-					Authentication.user = response;
-				}, function(response) {
-					$scope.error = response.data.message;
-				});
+                $scope.success = $scope.error = null;
+                var user = new Users($scope.user);
+
+                user.$update(function(response) {
+                    $scope.success = true;
+                    Authentication.user = response;
+                }, function(response) {
+                    $scope.error = response.data.message;
+                });
 			} else {
 				$scope.submitted = true;
 			}
