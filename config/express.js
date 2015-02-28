@@ -39,7 +39,7 @@ module.exports = function(db) {
 
 	// Passing the request url to environment locals
 	app.use(function(req, res, next) {
-		res.locals.url = req.protocol + '://' + req.headers.host + req.url;
+		res.locals.url = req.protocol + ':// ' + req.headers.host + req.url;
 		next();
 	});
 
@@ -109,7 +109,7 @@ module.exports = function(db) {
 	app.use(helmet.nosniff());
 	app.use(helmet.ienoopen());
 	app.disable('x-powered-by');
-
+	
 	// Setting the app router and static folder
 	app.use(express.static(path.resolve('./public')));
 
